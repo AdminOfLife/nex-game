@@ -23,32 +23,22 @@ int _tmain(int argc, _TCHAR* argv[])
 	Map map = Map(render);
 	Game game = Game();
 
-	game.GameState = game.GAME_STATE_ACTIVE;
-	char * filename = "fl1.bmp";
-	COLORREF test[8 * 8];
-
-	unsigned char * bitmap;
-	BM_INFOHEADER  bitmapInfoHeader ;
-
-	bitmap = LoadBitmapFile(filename, &bitmapInfoHeader);
-
-	for (int i = 0; i < 8 * 8; ++i)
-	{
-		test[i] = RGB(255, 255, 0);
-	}
-
-	for (int i = 0; i <= 2068; i++)
+	for (int i = 0; i < 3840; i++)
 		printf("#");
 
-	printf("\n\n");
+	game.GameState = game.GAME_STATE_ACTIVE;
+
+	COLORREF bitmap[320 * 240];
+	BM_INFOHEADER  bitmapInfoHeader;
+
+	int ret = LoadBitmapFile("spl.bmp", &bitmapInfoHeader, bitmap);
 
 	while (game.GameState == game.GAME_STATE_ACTIVE)
 	{
 		game.Update(render);
 		map.Update(render);
-		render.BlockShiftBitmap(bitmap, 1, 1, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight);
+		render.BlockShiftBitmap(bitmap, 0, 0, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight);
 		render.Update();
-		Sleep(60000);
 	}
 
 	return 0;

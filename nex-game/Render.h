@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-const int CONSOLE_SIZE_X = 120;
+const int CONSOLE_SIZE_X = 80;
 const int CONSOLE_SIZE_Y = 30;
 const int SCREEN_SIZE_X = 320;
 const int SCREEN_SIZE_Y = 240;

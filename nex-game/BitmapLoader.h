@@ -10,7 +10,9 @@ struct BM_FILEHEADER
 	WORD bfReserved2;  //reserved; must be 0
 	DWORD bfOffBits;  //species the offset in bytes from the bitmapfileheader to the bitmap bits
 };
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 struct BM_INFOHEADER
 {
 	DWORD biSize;  //specifies the number of bytes required by the struct
@@ -27,5 +29,4 @@ struct BM_INFOHEADER
 };
 #pragma pack(pop)
 
-void LoadBitmapFile(char *filename, BM_INFOHEADER *bitmapInfoHeader, COLORREF output[]);
-
+int LoadBitmapFile(char *filename, BM_INFOHEADER *bitmapInfoHeader, COLORREF output[]);

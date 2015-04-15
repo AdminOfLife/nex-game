@@ -18,8 +18,6 @@ Render::Render()
 	// set console stuff
 	COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
 	SetConsoleScreenBufferSize(hWnd, size);
-
-	printf("w %d h %d", SCREEN_SIZE_X, SCREEN_SIZE_Y);
 }
 
 Render::~Render()
@@ -28,14 +26,12 @@ Render::~Render()
 
 void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 {
-	printf("%d %d %d\n", x, y, colour);
 	framebuffer[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
 void Render::BlockShiftBitmap(COLORREF arr[], int posx, int posy, int width, int height) // arr length should be width * height
 {
 	int arrptr = 0;
-	int arrpos = 0;
 
 	for (int i = 0; i < FBUFFER_SIZE; ++i)
 		framebuffer[i] = RGB(121, 121, 121);
@@ -44,9 +40,8 @@ void Render::BlockShiftBitmap(COLORREF arr[], int posx, int posy, int width, int
 	{
 		for (int x = 0; x < width; ++x)
 		{
-			arrpos = ((posy + y) * SCREEN_SIZE_X) + (posx + x);
-			printf("%d %d: %d %d = %d\n", x, y, posx + x, posy + y, arrpos);
-			framebuffer[arrpos] = arr[++arrptr];
+			//printf("%06x\n", arr[arrptr]);
+			framebuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arr[arrptr++];
 		}
 	}
 }
@@ -75,7 +70,7 @@ void Render::Update()
 	// calculate the position to render based on window size and frame size
 	int x, y;
 	x = (width / 2) - (SCREEN_SIZE_X / 2);
-	y = (height / 2) - (SCREEN_SIZE_Y / 2);;
+	y = (height / 2) - (SCREEN_SIZE_Y / 2);
 
 	// get/create stuff
 	hdc = GetDC(hWnd);
@@ -96,7 +91,7 @@ void Render::Update()
 	}
 
 	// blt the virtual DC into the screen DC
-	BitBlt(hdc, x, y, c.right - c.left, 200, hdcMem, 0, 0, SRCCOPY);
+	BitBlt(hdc, x, y, c.right - c.left, SCREEN_SIZE_Y, hdcMem, 0, 0, SRCCOPY);
 
 	// clean up
 	DeleteDC(hdcMem);
