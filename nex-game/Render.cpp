@@ -20,11 +20,6 @@ Render::Render()
 	SetConsoleScreenBufferSize(hWnd, size);
 
 	printf("w %d h %d", SCREEN_SIZE_X, SCREEN_SIZE_Y);
-
-	image = (HBITMAP)LoadImage(NULL, L"spl.bmp", IMAGE_BITMAP, 320, 240, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-
-	if (image == NULL)
-		printf("ERROR: image is null");
 }
 
 Render::~Render()
@@ -34,25 +29,25 @@ Render::~Render()
 void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 {
 	printf("%d %d %d\n", x, y, colour);
-	framebuffer[(y * SCREEN_SIZE_Y) + x] = colour;
+	framebuffer[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
-int randrange(int min, int max)
+void Render::BlockShiftBitmap(COLORREF arr[], int posx, int posy, int width, int height) // arr length should be width * height
 {
-	return min + (rand() % (int)(max - min + 1));
-}
+	int arrptr = 0;
+	int arrpos = 0;
 
-void test(Render render)
-{
-	int x = 0, y = 0;
-	COLORREF c;
+	for (int i = 0; i < FBUFFER_SIZE; ++i)
+		framebuffer[i] = RGB(121, 121, 121);
 
-	for (int i = 0; i < 100; i++)
+	for(int y = 0; y < height; ++y)
 	{
-		x = randrange(0, 320);
-		y = randrange(0, 240);
-		c = RGB(randrange(0, 255), randrange(0, 255), randrange(0, 255));
-		render.SetFrameBufferPixel(x, y, c);
+		for (int x = 0; x < width; ++x)
+		{
+			arrpos = ((posy + y) * SCREEN_SIZE_X) + (posx + x);
+			printf("%d %d: %d %d = %d\n", x, y, posx + x, posy + y, arrpos);
+			framebuffer[arrpos] = arr[++arrptr];
+		}
 	}
 }
 
@@ -95,7 +90,7 @@ void Render::Update()
 	{
 		for (int x = 0; x < SCREEN_SIZE_X; x++)
 		{
-			framebuffer[bufferpointer] = RGB(randrange(0, 255), randrange(0, 255), randrange(0, 255));
+			//framebuffer[bufferpointer] = RGB(randrange(0, 255), randrange(0, 255), randrange(0, 255));
 			SetPixel(hdcMem, x, y, framebuffer[bufferpointer++]);
 		}
 	}

@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="BitmapLoader.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Sprite.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BitmapLoader.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="nex-game.cpp" />
     <ClCompile Include="Render.cpp" />

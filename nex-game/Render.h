@@ -15,7 +15,7 @@ public:
 	~Render();
 	void Update();
 	void SetFrameBufferPixel(int x, int y, COLORREF colour);
-	//void DrawSprite(Sprite sprite, int x, int y);
+	void BlockShiftBitmap(COLORREF arr[], int x, int y, int width, int height); // arr length should be width * height
 
 private:
 	HWND windowhandle;
