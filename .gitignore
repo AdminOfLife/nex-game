@@ -250,3 +250,4 @@ pip-log.txt
 /res
 *.tlog
 *.ipch
+*.idb
