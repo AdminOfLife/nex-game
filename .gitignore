@@ -251,3 +251,4 @@ pip-log.txt
 *.tlog
 *.ipch
 *.idb
+*.sdf
