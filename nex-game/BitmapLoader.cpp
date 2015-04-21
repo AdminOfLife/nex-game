@@ -1,15 +1,17 @@
-#include "stdafx.h"
+/*
+BitmapLoader
+Contains a simple function to read a bitmap file and store just the binary data into a COLORREF array.
+*/
 
-#include <windows.h>
-#include <stdio.h>
+#include "stdafx.h"
 
 #include "BitmapLoader.h"
 
 /*
- *	LoadBitMapFile:
- *	Written by: StackOverflow user 'ollo' at 2013/01/11
- *	Accessed: 15/04/2015 from http://stackoverflow.com/a/14279511
- */
+LoadBitMapFile:
+Written by: StackOverflow user 'ollo' at 2013/01/11
+Accessed: 15/04/2015 from http://stackoverflow.com/a/14279511
+*/
 int LoadBitmapFile(char *filename, BM_INFOHEADER *bitmapInfoHeader, COLORREF *output, int width, int height)
 {
 	errno_t err;

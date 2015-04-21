@@ -7,7 +7,7 @@
 #include "Render.h"
 #include "Sprite.h"
 #include "Game.h"
-#include "Map.h"
+#include "Screen.h"
 
 HBITMAP image;
 HWND hWnd;
@@ -86,6 +86,7 @@ void Render::Update()
 
 	// Copy each sprite to draw onto the virtual hdc
 	int bufferpointer = 0;
+		
 	for (int y = 0; y < SCREEN_SIZE_Y; y++)
 	{
 		for (int x = 0; x < SCREEN_SIZE_X; x++)

@@ -1,12 +1,19 @@
 #pragma once
+#include "stdafx.h"
+
+#include "Render.h"
+#include "Sprite.h"
+
 
 class Game
 {
 public:
 	Game();
 	~Game();
-	void Splash(Render render);
-	int Update(Render render);
+	void AddSprite(Sprite sprite);
+	void Splash(Render * render);
+	int Update(Render * render);
+	Sprite GetSprite(int index);
 
 	enum GState
 	{
@@ -21,4 +28,5 @@ private:
 	int GameTick;
 	char KeyBuffer[6];
 	char KeyBufferPtr = 0;
+	vector<Sprite> SpriteList;
 };

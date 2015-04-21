@@ -2,18 +2,15 @@
 //
 
 #include "stdafx.h"
-#include <windows.h>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <cmath>
 
 #include "BitmapLoader.h"
 #include "Render.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Tile.h"
-#include "Map.h"
+#include "TileMap.h"
+#include "Level.h"
+#include "Screen.h"
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -21,20 +18,28 @@ int _tmain(int argc, _TCHAR* argv[])
 	//SetConsoleTitle(L"NEXER - Explore the internet!");
 	SetConsoleTitle(L"Southclaw's 2D Retro Rendering Rapter!");
 
-	Render render = Render();
-	Map map = Map(render);
-	Game game = Game();
 
-	for (int i = 0; i < 3840; i++)
-		printf("#");
+	// Construction
+	Render * render = new Render();
+	Game * game = new Game();
 
-	game.Splash(render);
+	game->AddSprite(Sprite("wall.bmp", 16, 16, 0, MAP));
+	game->AddSprite(Sprite("floor.bmp", 16, 16, 0, MAP));
 
-	while (game.GameState != game.GAME_STATE_END)
+	Level * level = new Level(game, "http://google.com");
+	Screen * screen = new Screen(render, game, level);
+
+
+
+	// Initialisation
+	game->Splash(render);
+
+	// Enter main loop
+	while (game->GameState != game->GAME_STATE_END)
 	{
-		game.Update(render);
-		map.Update(render);
-		render.Update();
+		game->Update(render);
+		screen->Update(render);
+		render->Update();
 	}
 
 	return 0;

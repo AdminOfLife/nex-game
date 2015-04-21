@@ -1,12 +1,15 @@
+/*
+Sprite
+A sprite consists of a bitmap, a position, a z-priority for rendering and a type.
+*/
+
+#pragma once
 #include "stdafx.h"
-#include <vector>
-#include <string>
-#include <windows.h>
-using namespace std;
 
 #include "Sprite.h"
 #include "Render.h"
 #include "BitmapLoader.h"
+
 
 Sprite::Sprite()
 {
@@ -34,7 +37,7 @@ Sprite::~Sprite()
 	//
 }
 
-void Sprite::DrawAt(Render render, int x, int y)
+void Sprite::DrawAt(Render * render, int x, int y)
 {
-	render.BlockShiftBitmap(bitmap, x, y, width, height);
+	render->BlockShiftBitmap(bitmap, x, y, width, height);
 }

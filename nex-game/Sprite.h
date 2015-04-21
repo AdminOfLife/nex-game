@@ -1,6 +1,5 @@
 #pragma once
-
-#include <windows.h>
+#include "stdafx.h"
 
 #include "Render.h"
 
@@ -19,7 +18,7 @@ public:
 	Sprite();
 	Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE type);
 	~Sprite();
-	void DrawAt(Render render, int x, int y);
+	void DrawAt(Render * render, int x, int y);
 
 private:
 	COLORREF * bitmap;

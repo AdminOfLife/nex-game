@@ -11,5 +11,10 @@
 #include <tchar.h>
 
 
-
-// TODO: reference additional headers your program requires here
+#include <windows.h>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <cmath>
+#include <stdio.h>
+using namespace std;
