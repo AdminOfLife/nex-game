@@ -18,6 +18,8 @@ Render::Render()
 	// set console stuff
 	COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
 	SetConsoleScreenBufferSize(hWnd, size);
+
+	framebuffer = new COLORREF[FBUFFER_SIZE];
 }
 
 Render::~Render()
@@ -29,21 +31,24 @@ void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 	framebuffer[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
-void Render::BlockShiftBitmap(COLORREF arr[], int posx, int posy, int width, int height) // arr length should be width * height
+void Render::BlockShiftBitmap(COLORREF * arrptr, int posx, int posy, int width, int height) // arr length should be width * height
 {
-	int arrptr = 0;
-
-	for (int i = 0; i < FBUFFER_SIZE; ++i)
-		framebuffer[i] = RGB(121, 121, 121);
+	int iter = 0;
 
 	for(int y = 0; y < height; ++y)
 	{
-		for (int x = 0; x < width; ++x)
+		for(int x = 0; x < width; ++x)
 		{
-			//printf("%06x\n", arr[arrptr]);
-			framebuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arr[arrptr++];
+			//printf("%06x\n", arrptr[iter]);
+			framebuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arrptr[iter++];
 		}
 	}
+}
+
+void Render::Clear()
+{
+	for(int i = 0; i < FBUFFER_SIZE; ++i)
+		framebuffer[i] = 0;
 }
 
 void Render::Update()

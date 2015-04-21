@@ -13,11 +13,12 @@ class Render
 public:
 	Render();
 	~Render();
-	void Update();
 	void SetFrameBufferPixel(int x, int y, COLORREF colour);
 	void BlockShiftBitmap(COLORREF arr[], int x, int y, int width, int height); // arr length should be width * height
+	void Clear();
+	void Update();
 
 private:
 	HWND windowhandle;
-	COLORREF framebuffer[FBUFFER_SIZE];
+	COLORREF * framebuffer;
 };

@@ -5,7 +5,8 @@ class Game
 public:
 	Game();
 	~Game();
-	void Update(Render);
+	void Splash(Render render);
+	int Update(Render render);
 
 	enum GState
 	{
@@ -17,4 +18,7 @@ public:
 	GState GameState;
 
 private:
+	int GameTick;
+	char KeyBuffer[6];
+	char KeyBufferPtr = 0;
 };

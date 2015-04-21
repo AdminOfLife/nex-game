@@ -29,4 +29,4 @@ struct BM_INFOHEADER
 };
 #pragma pack(pop)
 
-int LoadBitmapFile(char *filename, BM_INFOHEADER *bitmapInfoHeader, COLORREF output[]);
+int LoadBitmapFile(char *filename, BM_INFOHEADER *bitmapInfoHeader, COLORREF output[], int width, int height);

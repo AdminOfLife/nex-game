@@ -12,12 +12,14 @@
 #include "Render.h"
 #include "Sprite.h"
 #include "Game.h"
+#include "Tile.h"
 #include "Map.h"
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SetConsoleTitle(L"Nex - Explore the internet!");
+	//SetConsoleTitle(L"NEXER - Explore the internet!");
+	SetConsoleTitle(L"Southclaw's 2D Retro Rendering Rapter!");
 
 	Render render = Render();
 	Map map = Map(render);
@@ -26,18 +28,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	for (int i = 0; i < 3840; i++)
 		printf("#");
 
-	game.GameState = game.GAME_STATE_ACTIVE;
+	game.Splash(render);
 
-	COLORREF bitmap[320 * 240];
-	BM_INFOHEADER  bitmapInfoHeader;
-
-	int ret = LoadBitmapFile("spl.bmp", &bitmapInfoHeader, bitmap);
-
-	while (game.GameState == game.GAME_STATE_ACTIVE)
+	while (game.GameState != game.GAME_STATE_END)
 	{
 		game.Update(render);
 		map.Update(render);
-		render.BlockShiftBitmap(bitmap, 0, 0, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight);
 		render.Update();
 	}
 
