@@ -22,20 +22,16 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Construction
 	Render * render = new Render();
-	Game * game = new Game();
+	Game * game = new Game(render);
 
-	game->AddSprite(&Sprite("charmap.bmp",	16, 1538,	0, GUI, 0));
 	game->AddSprite(&Sprite("wall.bmp",		16, 16,		0, MAP, 1));
 	game->AddSprite(&Sprite("floor.bmp",	16, 16,		0, MAP, 0));
 
+	// Initialisation
+	game->DrawSplash();
+
 	Level * level = new Level(game, "http://en.wikipedia.org/wiki/Main_Page");
 	Screen * screen = new Screen(render, game, level);
-
-	// Initialisation
-	game->Splash(render);
-
-	// Keep this app running until we're told to stop
-	MSG msg;
 
 	// Enter main loop
 	while (game->GameState != GAME_STATE_END)

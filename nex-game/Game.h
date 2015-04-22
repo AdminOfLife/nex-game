@@ -14,16 +14,23 @@ enum GState
 class Game
 {
 public:
-	Game();
+	Game(Render* render);
 	~Game();
+	void Wait(int ms);
 	void AddSprite(Sprite* sprite);
-	void Splash(Render* render);
+	void DrawSplash();
 	int Update(Render* render);
 	Sprite* GetSprite(int index);
+	void DrawString(char* string, COLORREF colour);
 
 	GState GameState;
+	Render* GameRenderer;
 
 private:
 	int GameTick;
+	DWORD WaitTick;
 	vector<Sprite*> SpriteList;
+
+	COLORREF Splash[320 * 240];
+	COLORREF CharMap[16 * 1520];
 };

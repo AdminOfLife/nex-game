@@ -11,8 +11,9 @@ Groups together a set of [TileMap]s which are composed of [Tile]s
 
 Level::Level(Game * game, char * seed)
 {
-	printf(seed);
-	printf("\n");
+	game->GameRenderer->Clear();
+	game->DrawString(seed, RGB(255, 255, 128));
+	game->Wait(3000);
 	
 	// generate a set of TileMaps based on seed
 

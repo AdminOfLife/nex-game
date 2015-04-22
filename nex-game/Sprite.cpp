@@ -40,5 +40,5 @@ Sprite::~Sprite()
 
 void Sprite::DrawAt(Render * render, int x, int y)
 {
-	render->BlockShiftBitmap(bitmap, x, y, width, height);
+	render->BlockShiftBitmap(bitmap, x, y, width, height, -1);
 }
