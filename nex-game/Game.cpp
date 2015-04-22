@@ -17,12 +17,12 @@ Game::~Game()
 	//
 }
 
-void Game::AddSprite(Sprite sprite)
+void Game::AddSprite(Sprite* sprite)
 {
 	SpriteList.push_back(sprite);
 }
 
-Sprite Game::GetSprite(int index)
+Sprite* Game::GetSprite(int index)
 {
 	return SpriteList.at(index);
 }
@@ -55,6 +55,27 @@ int Game::Update(Render * render)
 			GameState = GAME_STATE_ACTIVE;
 		}
 	}
+
+	if (_kbhit())
+	{
+		char c = _getch();
+
+		switch (c)
+		{
+		case 'w':;
+		case 's':;
+		case 'a':;
+		case 'd':;
+		}
+
+		system("cls");
+	}
+
+	POINT p;
+	GetCursorPos(&p);
+
+	ScreenToClient(render->WindowHandle, &p);
+
 
 	// Game rule code
 

@@ -16,7 +16,7 @@ Sprite::Sprite()
 	//
 }
 
-Sprite::Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE type)
+Sprite::Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE stype, bool issolid)
 {
 	BM_INFOHEADER  bitmapInfoHeader;
 	bitmap = new COLORREF[w * h];
@@ -29,7 +29,8 @@ Sprite::Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE type)
 	width = w;
 	height = h;
 	zPriority = zpriority;
-	type = type;
+	type = stype;
+	solid = issolid;
 }
 
 Sprite::~Sprite()

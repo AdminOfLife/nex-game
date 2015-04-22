@@ -1,6 +1,7 @@
-// nex-game.cpp : Defines the entry point for the console application.
-//
-
+/*
+NEXER (nex-game)
+Uses SR3 - Southclaw's Retro Rendering Rapter!
+*/
 #include "stdafx.h"
 
 #include "BitmapLoader.h"
@@ -13,32 +14,34 @@
 #include "Screen.h"
 using namespace std;
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//SetConsoleTitle(L"NEXER - Explore the internet!");
 	SetConsoleTitle(L"Southclaw's 2D Retro Rendering Rapter!");
 
-
 	// Construction
 	Render * render = new Render();
 	Game * game = new Game();
 
-	game->AddSprite(Sprite("wall.bmp", 16, 16, 0, MAP));
-	game->AddSprite(Sprite("floor.bmp", 16, 16, 0, MAP));
+	game->AddSprite(&Sprite("charmap.bmp",	16, 1538,	0, GUI, 0));
+	game->AddSprite(&Sprite("wall.bmp",		16, 16,		0, MAP, 1));
+	game->AddSprite(&Sprite("floor.bmp",	16, 16,		0, MAP, 0));
 
-	Level * level = new Level(game, "http://google.com");
+	Level * level = new Level(game, "http://en.wikipedia.org/wiki/Main_Page");
 	Screen * screen = new Screen(render, game, level);
-
-
 
 	// Initialisation
 	game->Splash(render);
 
+	// Keep this app running until we're told to stop
+	MSG msg;
+
 	// Enter main loop
-	while (game->GameState != game->GAME_STATE_END)
+	while (game->GameState != GAME_STATE_END)
 	{
+		screen->Update(render, game);
 		game->Update(render);
-		screen->Update(render);
 		render->Update();
 	}
 

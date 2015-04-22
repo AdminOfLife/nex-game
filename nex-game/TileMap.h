@@ -11,7 +11,11 @@ public:
 	TileMap(Game * game);
 	TileMap(Game * game, Tile tiles[20 * 15]);
 	void GetTiles(Tile tiles[]);
+	Tile* GetTile(int index);
+	void SetTile(int index, Tile tile);
 
-private:
-	Tile * tileList;
+protected:
+	Tile tileList[20 * 15];
+
+	friend class Screen;
 };

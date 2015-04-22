@@ -19,7 +19,7 @@ Render::Render()
 	COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
 	SetConsoleScreenBufferSize(hWnd, size);
 
-	framebuffer = new COLORREF[FBUFFER_SIZE];
+	FrameBuffer = new COLORREF[FBUFFER_SIZE];
 }
 
 Render::~Render()
@@ -28,7 +28,7 @@ Render::~Render()
 
 void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 {
-	framebuffer[(y * SCREEN_SIZE_X) + x] = colour;
+	FrameBuffer[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
 void Render::BlockShiftBitmap(COLORREF * arrptr, int posx, int posy, int width, int height) // arr length should be width * height
@@ -40,7 +40,7 @@ void Render::BlockShiftBitmap(COLORREF * arrptr, int posx, int posy, int width, 
 		for(int x = 0; x < width; ++x)
 		{
 			//printf("%06x\n", arrptr[iter]);
-			framebuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arrptr[iter++];
+			FrameBuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arrptr[iter++];
 		}
 	}
 }
@@ -48,7 +48,7 @@ void Render::BlockShiftBitmap(COLORREF * arrptr, int posx, int posy, int width, 
 void Render::Clear()
 {
 	for(int i = 0; i < FBUFFER_SIZE; ++i)
-		framebuffer[i] = 0;
+		FrameBuffer[i] = 0;
 }
 
 void Render::Update()
@@ -91,8 +91,7 @@ void Render::Update()
 	{
 		for (int x = 0; x < SCREEN_SIZE_X; x++)
 		{
-			//framebuffer[bufferpointer] = RGB(randrange(0, 255), randrange(0, 255), randrange(0, 255));
-			SetPixel(hdcMem, x, y, framebuffer[bufferpointer++]);
+			SetPixel(hdcMem, x, y, FrameBuffer[bufferpointer++]);
 		}
 	}
 
@@ -125,11 +124,11 @@ fBuf[(y * SCREEN_SIZE_Y) + x] = colour;
 Render::Render()
 {
 // console handle
-windowhandle = GetConsoleWindow();
+WindowHandle = GetConsoleWindow();
 
 // set console stuff
 COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
-SetConsoleScreenBufferSize(windowhandle, size);
+SetConsoleScreenBufferSize(WindowHandle, size);
 
 printf("w %d h %d buffer %d (%d bytes)", SCREEN_SIZE_X, SCREEN_SIZE_Y, FBUFFER_SIZE, FBUFFER_SIZE*4);
 }
@@ -141,8 +140,8 @@ printf("Goodbye");
 
 void Render::Update()
 {
-draw(framebuffer);
-render(windowhandle, framebuffer);
+draw(FrameBuffer);
+render(WindowHandle, FrameBuffer);
 }
 
 void Render::draw(COLORREF fBuf[])

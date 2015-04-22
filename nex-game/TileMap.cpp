@@ -19,8 +19,6 @@ TileMap::TileMap()
 
 TileMap::TileMap(Game * game)
 {
-	tileList = new Tile[20 * 15];
-
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < 20 * 15; ++i)
@@ -37,8 +35,6 @@ TileMap::TileMap(Game * game)
 
 TileMap::TileMap(Game * game, Tile tiles[20 * 15])
 {
-	tileList = new Tile[20 * 15];
-
 	for (int i = 0; i < 20 * 15; ++i)
 		tileList[i] = tiles[i];
 }
@@ -47,4 +43,14 @@ void TileMap::GetTiles(Tile tile[])
 {
 	for (int i = 0; i < 20 * 15; ++i)
 		tile[i] = tileList[i];
+}
+
+Tile* TileMap::GetTile(int index)
+{
+	return &tileList[index];
+}
+
+void TileMap::SetTile(int index, Tile tile)
+{
+	tileList[index] = tile;
 }

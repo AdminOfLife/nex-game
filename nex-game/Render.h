@@ -18,7 +18,8 @@ public:
 	void Clear();
 	void Update();
 
+	HWND WindowHandle;
+
 private:
-	HWND windowhandle;
-	COLORREF * framebuffer;
+	COLORREF * FrameBuffer;
 };

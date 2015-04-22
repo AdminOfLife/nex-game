@@ -16,7 +16,7 @@ class Sprite
 {
 public:
 	Sprite();
-	Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE type);
+	Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE stype, bool issolid);
 	~Sprite();
 	void DrawAt(Render * render, int x, int y);
 
@@ -26,4 +26,5 @@ private:
 	int height;
 	int zPriority;
 	SPRITE_TYPE type;
+	bool solid;
 };

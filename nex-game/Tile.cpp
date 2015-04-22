@@ -16,7 +16,7 @@ Tile::Tile()
 	posY = 0;
 }
 
-Tile::Tile(int x, int y, Sprite spr)
+Tile::Tile(int x, int y, Sprite* spr)
 {
 	sprite = spr;
 	posX = x;
@@ -25,10 +25,20 @@ Tile::Tile(int x, int y, Sprite spr)
 
 Tile::~Tile()
 {
-	//
+	// nothing to delete
 }
 
-void Tile::Draw(Render * render)
+void Tile::Draw(Render* render)
 {
-	sprite.DrawAt(render, posX * 16, posY * 16);
+	sprite->DrawAt(render, posX * 16, posY * 16);
+}
+
+void Tile::SetSprite(Sprite* spr)
+{
+	sprite = spr;
+}
+
+Sprite* Tile::GetSprite()
+{
+	return sprite;
 }

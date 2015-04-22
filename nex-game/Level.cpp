@@ -12,6 +12,7 @@ Groups together a set of [TileMap]s which are composed of [Tile]s
 Level::Level(Game * game, char * seed)
 {
 	printf(seed);
+	printf("\n");
 	
 	// generate a set of TileMaps based on seed
 

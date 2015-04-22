@@ -12,7 +12,7 @@ class Screen
 public:
 	Screen(Render * render, Game * game, Level * level);
 	~Screen();
-	void Update(Render * render);
+	void Update(Render * render, Game * game);
 
 private:
 	TileMap tileMap;

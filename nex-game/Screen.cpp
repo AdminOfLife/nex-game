@@ -17,13 +17,11 @@ Screen::Screen(Render * render, Game * game, Level * level)
 	tileMap = level->GetTileMap(level->GetActiveMap());
 }
 
-Screen::~Screen()
+void Screen::Update(Render * render, Game * game)
 {
-
-}
-
-void Screen::Update(Render * render)
-{
+	if (game->GameState != GAME_STATE_ACTIVE)
+		return;
+		
 	Tile tilemap[20 * 15];
 	tileMap.GetTiles(tilemap);
 
@@ -32,18 +30,5 @@ void Screen::Update(Render * render)
 		tilemap[i].Draw(render);
 	}
 
-	// Test stuff
-	int x = 0;
-	int y = 0;
-	for (int i = 0; i < 20 * 15; ++i)
-	{
-		// Delete the tile from here
-		// create a new tile and assign it to here
-		x++;
-		if (x == 20)
-		{
-			x = 0;
-			y++;
-		}
-	}
+	return;
 }
