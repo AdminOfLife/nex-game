@@ -17,6 +17,7 @@ public:
 	void BlockShiftBitmap(COLORREF* arr, int x, int y, int width, int height, COLORREF trans); // arr length should be width * height
 	void Clear();
 	void Update();
+	void ClientToFrame(POINT* point);
 
 	HWND WindowHandle;
 

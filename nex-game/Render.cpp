@@ -9,15 +9,12 @@
 #include "Game.h"
 #include "Screen.h"
 
-HBITMAP image;
-HWND hWnd;
-
 Render::Render()
 {
-	hWnd = GetConsoleWindow();
+	WindowHandle = GetConsoleWindow();
 	// set console stuff
 	COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
-	SetConsoleScreenBufferSize(hWnd, size);
+	SetConsoleScreenBufferSize(WindowHandle, size);
 
 	FrameBuffer = new COLORREF[FBUFFER_SIZE];
 }
@@ -72,7 +69,7 @@ void Render::Update()
 
 	int width, height;
 
-	GetClientRect(hWnd, &c);
+	GetClientRect(WindowHandle, &c);
 
 	width = c.right - c.left;
 	height = c.bottom - c.top;
@@ -83,7 +80,7 @@ void Render::Update()
 	y = (height / 2) - (SCREEN_SIZE_Y / 2);
 
 	// get/create stuff
-	hdc = GetDC(hWnd);
+	hdc = GetDC(WindowHandle);
 	hdcMem = CreateCompatibleDC(hdc);
 	bitmap = CreateCompatibleBitmap(hdc, SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
@@ -106,9 +103,18 @@ void Render::Update()
 	// clean up
 	DeleteDC(hdcMem);
 	DeleteObject(bitmap);
-	ReleaseDC(hWnd, hdc);
+	ReleaseDC(WindowHandle, hdc);
 }
 
+void Render::ClientToFrame(POINT* point)
+{
+	RECT c;
+
+	GetClientRect(WindowHandle, &c);
+
+	point->x -= ((c.right - c.left) / 2) - (SCREEN_SIZE_X / 2);
+	point->y -= ((c.bottom - c.top) / 2) - (SCREEN_SIZE_Y / 2);
+}
 
 
 /*

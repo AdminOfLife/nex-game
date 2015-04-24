@@ -17,12 +17,18 @@ Game::Game(Render* render)
 
 	LoadBitmapFile("spl.bmp", &bitmapInfoHeader, Splash, 320, 240);
 	LoadBitmapFile("charmap.bmp", &bitmapInfoHeader, CharMap, 16, 1520);
-
 }
 
 Game::~Game()
 {
 	//
+}
+
+void Game::Init()
+{
+	GameRenderer->BlockShiftBitmap(Splash, 0, 0, 320, 240, -1);
+
+	GamePlayer = Character(SpriteList.at(2), 100, 100);
 }
 
 void Game::Wait(int ms)
@@ -40,9 +46,11 @@ Sprite* Game::GetSprite(int index)
 	return SpriteList.at(index);
 }
 
-void Game::DrawSplash()
+double absoluteangle(double angle)
 {
-	GameRenderer->BlockShiftBitmap(Splash, 0, 0, 320, 240, -1);
+	while (angle < 0.0)angle += 360.0;
+	while (angle > 360.0)angle -= 360.0;
+	return angle;
 }
 
 int Game::Update(Render* render)
@@ -71,22 +79,33 @@ int Game::Update(Render* render)
 
 		switch (c)
 		{
-		case 'w':printf("FORWARD");
-		case 's':printf("BACKWARD");
-		case 'a':printf("LEFT");
-		case 'd':printf("RIGHT");
+		case ' ':
+			printf("!\n");
+			break;
 		}
-
-		system("cls");
 	}
 
-	POINT p;
-	GetCursorPos(&p);
+	POINT curspos;
+	GetCursorPos(&curspos);
+	ScreenToClient(render->WindowHandle, &curspos);
+	render->ClientToFrame(&curspos);
 
-	ScreenToClient(render->WindowHandle, &p);
+	POINT charpos;
+	GamePlayer.GetPos(&charpos);
 
+	double distance = sqrt(pow(curspos.x - charpos.x, 2) + pow(curspos.y - charpos.y, 2));
 
+	if (distance > 3.0)
+	{
+		double angle;
+		angle = absoluteangle(3.141592359 - atan2(curspos.x - charpos.x, curspos.y - charpos.y));
+
+		GamePlayer.Move(angle - 3.141592359, distance > 6.0 ? 6.0 : distance);
+	}
 	// Game rule code
+
+	
+	GamePlayer.Draw(render);
 
 	GameTick++;
 
