@@ -17,25 +17,15 @@ Entity::Entity(Sprite* sprite, POINT position, double angle, double velx, double
 	velY_ = vely;
 	timeCreated_ = GetTickCount();
 	timeToLive_ = ttl;
-	printf("createentity\n");
 }
 
 Entity::~Entity()
 {
-	printf("destroyentity\n");
+	//
 }
 
 void Entity::update()
 {
-	if (timeToLive_ != -1)
-	{
-		if (GetTickCount() - timeCreated_ > timeToLive_)
-		{
-			delete this;
-			return;
-		}
-	}
-
 	if (position_.x + velX_ - 8 < 0 || position_.x + velX_ + 8 > SCREEN_SIZE_X)
 		velX_ = 0;
 
@@ -76,6 +66,8 @@ void Entity::update()
 
 	position_.x += (int)round(velX_);
 	position_.y += (int)round(velY_);
+
+	return;
 }
 
 void Entity::draw(Render* render)
@@ -126,3 +118,12 @@ void Entity::getVelocity(double& x, double& y)
 	y = velY_;
 }
 
+unsigned long Entity::getTimeCreated()
+{
+	return timeCreated_;
+}
+
+unsigned long Entity::getTimeToLive()
+{
+	return timeToLive_;
+}

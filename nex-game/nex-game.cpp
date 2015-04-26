@@ -28,11 +28,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	Sprite* tmp;
 
-	sm->AddSprite(tmp = new Sprite("wall.bmp",		16, 16, 0, MAP, SQUARE));
-	sm->AddSprite(tmp = new Sprite("floor.bmp",		16, 16, 0, MAP, NOCOLL));
-	sm->AddSprite(tmp = new Sprite("chr.bmp",		16, 16, 0, CHR, CIRCLE));
-	sm->AddSprite(tmp = new Sprite("blocker.bmp",	16, 16, 0, MAP, SQUARE));
-	sm->AddSprite(tmp = new Sprite("laser.bmp",		16, 16, 0, ENT, NOCOLL));
+	sm->AddSprite(tmp = new Sprite("wall.bmp",		16, 16, MAP, SQUARE));
+	sm->AddSprite(tmp = new Sprite("floor.bmp",		16, 16, MAP, NOCOLL));
+	sm->AddSprite(tmp = new Sprite("chr.bmp",		16, 16, CHR, CIRCLE));
+	sm->AddSprite(tmp = new Sprite("blocker.bmp",	16, 16, MAP, SQUARE));
+	sm->AddSprite(tmp = new Sprite("laser.bmp",		16, 16, ENT, NOCOLL));
 
 //	Screen* screen = new Screen(render, game, game->GameLevel);
 

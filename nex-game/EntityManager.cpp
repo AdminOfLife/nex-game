@@ -15,7 +15,7 @@ EntityManager::EntityManager()
 
 Entity* EntityManager::CreateEntity(Sprite* sprite, POINT position, double angle, double velX, double velY, int ttl)
 {
-	Entity* entity = new Entity(sprite, position, angle, velX, velY);
+	Entity* entity = new Entity(sprite, position, angle, velX, velY, ttl);
 	entitySet_.insert(entity);
 
 	return entity;
@@ -23,19 +23,48 @@ Entity* EntityManager::CreateEntity(Sprite* sprite, POINT position, double angle
 
 void EntityManager::DestroyEntity(Entity* entity)
 {
-	entitySet_.erase(entity);
 	entity->~Entity();
-	delete entity;
+	entitySet_.erase(entity);
 }
 
 void EntityManager::getEntitySet(set<Entity*> entitySet)
-{
+{  
 	entitySet = entitySet_;
 }
 
 void EntityManager::update()
 {
-	// update all entites
+	set<Entity*>::iterator e;
+
+	for (e = entitySet_.begin(); e != entitySet_.end();)
+	{
+		if ((*e)->getTimeToLive() != -1)
+		{
+			if (GetTickCount() - (*e)->getTimeCreated() > (*e)->getTimeToLive())
+			{
+				DestroyEntity((*e++));
+				continue;
+			}
+		}
+
+		(*e)->update();
+
+		++e;
+	}
+
+	for (auto e : entitySet_)
+	{
+		if (e->getTimeToLive() != -1)
+		{
+			if (GetTickCount() - e->getTimeCreated() > e->getTimeToLive())
+			{
+				DestroyEntity(e);
+				continue;
+			}
+		}
+
+		e->update();
+	}
 }
 
 void EntityManager::draw(Render* render)
@@ -47,4 +76,28 @@ void EntityManager::draw(Render* render)
 	CHR, // characters
 	GUI // ui
 	*/
+	// lazy mathod, 4 loops:
+	for (auto e : entitySet_)
+	{
+		if (e->getSprite()->getType() == MAP)
+			e->draw(render);
+	}
+
+	for (auto e : entitySet_)
+	{
+		if (e->getSprite()->getType() == ENT)
+			e->draw(render);
+	}
+
+	for (auto e : entitySet_)
+	{
+		if (e->getSprite()->getType() == CHR)
+			e->draw(render);
+	}
+
+	for (auto e : entitySet_)
+	{
+		if (e->getSprite()->getType() == GUI)
+			e->draw(render);
+	}
 }

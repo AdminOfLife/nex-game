@@ -22,19 +22,21 @@ class Sprite
 {
 public:
 	Sprite();
-	Sprite(char* filename, int w, int h, int zpriority, SPRITE_TYPE stype, COLLISION_TYPE coltype);
+	Sprite(char* filename, int w, int h, SPRITE_TYPE stype, COLLISION_TYPE coltype);
 	~Sprite();
 	void DrawAt(Render* render, int x, int y);
 	void DrawAt(Render* render, int x, int y, double angle);
 	bool IsCollidingWith(Sprite* spr);
 	bool IsCollidingWith(int x, int y, double range);
+
+	void getSize(int& width, int& height);
+	SPRITE_TYPE getType();
 	COLLISION_TYPE GetColType();
 
 private:
-	COLORREF * bitmap;
-	int width;
-	int height;
-	int zPriority;
-	SPRITE_TYPE type;
-	COLLISION_TYPE colType;
+	COLORREF * bitmap_;
+	int width_;
+	int height_;
+	SPRITE_TYPE drawType_;
+	COLLISION_TYPE collType_;
 };

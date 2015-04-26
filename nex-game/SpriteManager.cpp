@@ -9,7 +9,7 @@
 
 SpriteManager::SpriteManager()
 {
-	printf("SpriteManager Created");
+	//
 }
 
 void SpriteManager::AddSprite(Sprite* sprite)

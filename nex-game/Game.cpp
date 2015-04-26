@@ -24,7 +24,7 @@ Game::Game(Render* render, SpriteManager* sm)
 	GameTick = 0;
 	GameSpriteManager = sm;
 
-	LoadBitmapFile("lespl.bmp", &bitmapInfoHeader, Splash, 320, 240);
+	LoadBitmapFile("spl.bmp", &bitmapInfoHeader, Splash, 320, 240);
 	LoadBitmapFile("charmap.bmp", &bitmapInfoHeader, CharMap, 16, 1520);
 }
 
@@ -64,9 +64,9 @@ int Game::Update(Render* render)
 	{
 		GameTick++;
 
-		DrawString("Nice Memes :o)", RGB(255, 255, 128));
+		DrawString("ENTER THE NEX", RGB(255, 255, 128));
 
-		if (GameTick < 100)
+		if (GameTick < 1)
 		{
 			return 2;
 		}
@@ -137,8 +137,8 @@ int Game::Update(Render* render)
 	}
 
 	// Draw the character after tiles
-	GamePlayer->update();
-	GamePlayer->draw(render);
+	entityManager_->update();
+	entityManager_->draw(render);
 
 	GameTick++;
 

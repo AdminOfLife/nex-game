@@ -21,6 +21,9 @@ public:
 	double getAngle();
 	void setVelocity(double x, double y);
 	void getVelocity(double& x, double& y);
+	unsigned long getTimeCreated();
+	unsigned long getTimeToLive();
+
 
 private:
 	Sprite* sprite_;
