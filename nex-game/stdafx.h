@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <set>
 
 
 #include <windows.h>
@@ -18,4 +19,6 @@
 #include <cmath>
 #include <stdio.h>
 #include <conio.h>
+
+#include "algorithm"
 using namespace std;

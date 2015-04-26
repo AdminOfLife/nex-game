@@ -19,16 +19,6 @@ Screen::Screen(Render * render, Game * game, Level * level)
 
 void Screen::Update(Render * render, Game * game)
 {
-	if (game->GameState != GAME_STATE_ACTIVE)
-		return;
-		
-	Tile tilemap[20 * 15];
-	tileMap.GetTiles(tilemap);
-
-	for (int i = 0; i < 20 * 15; ++i)
-	{
-		tilemap[i].Draw(render);
-	}
 
 	return;
 }

@@ -4,34 +4,79 @@
 #include "stdafx.h"
 
 #include "Character.h"
+#include "Render.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
+#include "Entity.h"
+#include "EntityManager.h"
+#include "Game.h"
 
 
-Character::Character()
+Character::Character(EntityManager* em, SpriteManager* sm, Sprite* sprite, POINT position, double angle)
 {
-	//
+	entity_ = em->CreateEntity(sprite, position, angle, 0.0, 0.0);
+	entityManager_ = em;
+	spriteManager_ = sm;
 }
 
-Character::Character(Sprite* spr, int spawnx, int spawny)
+Character::~Character()
 {
-	sprite = spr;
-	posX = spawnx;
-	posY = spawny;
+	entityManager_->DestroyEntity(entity_);
 }
 
-void Character::Move(float direction, float speed)
+void Character::update()
 {
-	posX += round(speed * sin(-direction));
-	posY += round(speed * cos(-direction));
+	entity_->update();
 }
 
-void Character::Draw(Render* render)
+void Character::draw(Render* render)
 {
-	sprite->DrawAt(render, posX, posY);
+	entity_->draw(render);
 }
 
-void Character::GetPos(POINT* point)
+Entity* Character::getEntity()
 {
-	point->x = posX;
-	point->y = posY;
+	return entity_;
+}
+
+void Character::fireWeapon()
+{
+	POINT position;
+	double angle;
+	entity_->getPos(position);
+	angle = entity_->getAngle();
+
+	entityManager_->CreateEntity(spriteManager_->GetSprite(4), position, angle, 100 * sin(-angle), 100 * cos(-angle), 500);
+}
+
+
+
+void Character::setPos(POINT position)
+{
+	entity_->setPos(position);
+}
+
+void Character::getPos(POINT& position)
+{
+	entity_->getPos(position);
+}
+
+void Character::setAngle(double angle)
+{
+	entity_->setAngle(angle);
+}
+
+double Character::getAngle()
+{
+	return entity_->getAngle();
+}
+
+void Character::setVelocity(double x, double y)
+{
+	entity_->setVelocity(x, y);
+}
+
+void Character::getVelocity(double& x, double& y)
+{
+	entity_->getVelocity(x, y);
 }

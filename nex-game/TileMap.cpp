@@ -8,6 +8,7 @@ A [TileMap] is a 20x15 set of [Sprite]s which must be 16x16 pixels.
 #include "Game.h"
 #include "Render.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
 #include "Tile.h"
 #include "TileMap.h"
 
@@ -17,13 +18,13 @@ TileMap::TileMap()
 	//
 }
 
-TileMap::TileMap(Game * game)
+TileMap::TileMap(SpriteManager* sm)
 {
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < 20 * 15; ++i)
 	{
-		tileList[i] = Tile(x, y, game->GetSprite(rand() % 2));
+		tileList[i] = Tile(x, y, sm->GetSprite(rand() % 2));
 		x++;
 		if (x == 20)
 		{
@@ -31,9 +32,11 @@ TileMap::TileMap(Game * game)
 			y++;
 		}
 	}
+
+	tileList[21] = Tile(1, 1, sm->GetSprite(3));
 }
 
-TileMap::TileMap(Game * game, Tile tiles[20 * 15])
+TileMap::TileMap(Tile tiles[20 * 15])
 {
 	for (int i = 0; i < 20 * 15; ++i)
 		tileList[i] = tiles[i];

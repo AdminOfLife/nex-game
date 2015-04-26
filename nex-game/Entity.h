@@ -1,24 +1,17 @@
 #pragma once
 #include "stdafx.h"
 
-class Render;
 class Sprite;
-class SpriteManager;
-class Entity;
-class EntityManager;
-class Game;
+class Render;
 
-class Character
+class Entity
 {
 public:
-	Character(EntityManager* em, SpriteManager* sm, Sprite* sprite, POINT position, double angle);
-	~Character();
+	Entity(Sprite* sprite, POINT position, double angle, double velx, double vely, int ttl = -1);
+	~Entity();
 
 	void update();
 	void draw(Render* render);
-	Entity* getEntity();
-
-	void fireWeapon();
 
 	void setSprite(Sprite* sprite);
 	Sprite* getSprite();
@@ -30,7 +23,11 @@ public:
 	void getVelocity(double& x, double& y);
 
 private:
-	Entity* entity_;
-	EntityManager* entityManager_;
-	SpriteManager* spriteManager_;
+	Sprite* sprite_;
+	POINT position_;
+	double angle_;
+	double velX_;
+	double velY_;
+	unsigned long timeCreated_;
+	unsigned long timeToLive_;
 };

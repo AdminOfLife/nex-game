@@ -4,18 +4,27 @@
 #include "BitmapLoader.h"
 #include "Render.h"
 #include "Game.h"
+#include "Screen.h"
+#include "Level.h"
+#include "TileMap.h"
+#include "Tile.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
+#include "Entity.h"
+#include "EntityManager.h"
 #include "Character.h"
 
-Game::Game(Render* render)
+
+Game::Game(Render* render, SpriteManager* sm)
 {
 	BM_INFOHEADER  bitmapInfoHeader;
 
 	GameRenderer = render;
 	GameState = GAME_STATE_INIT;
 	GameTick = 0;
+	GameSpriteManager = sm;
 
-	LoadBitmapFile("spl.bmp", &bitmapInfoHeader, Splash, 320, 240);
+	LoadBitmapFile("lespl.bmp", &bitmapInfoHeader, Splash, 320, 240);
 	LoadBitmapFile("charmap.bmp", &bitmapInfoHeader, CharMap, 16, 1520);
 }
 
@@ -28,22 +37,15 @@ void Game::Init()
 {
 	GameRenderer->BlockShiftBitmap(Splash, 0, 0, 320, 240, -1);
 
-	GamePlayer = Character(SpriteList.at(2), 100, 100);
+	entityManager_ = new EntityManager();
+
+	GamePlayer = new Character(entityManager_, GameSpriteManager, GameSpriteManager->GetSprite(2), { 8, 16 }, 0.0);
+	GameLevel = new Level(GameSpriteManager, "NEXER");// "http://en.wikipedia.org/wiki/Main_Page");
 }
 
 void Game::Wait(int ms)
 {
 	WaitTick = GetTickCount() + ms;
-}
-
-void Game::AddSprite(Sprite* sprite)
-{
-	SpriteList.push_back(sprite);
-}
-
-Sprite* Game::GetSprite(int index)
-{
-	return SpriteList.at(index);
 }
 
 double absoluteangle(double angle)
@@ -62,7 +64,9 @@ int Game::Update(Render* render)
 	{
 		GameTick++;
 
-		if (GameTick < 10)
+		DrawString("Nice Memes :o)", RGB(255, 255, 128));
+
+		if (GameTick < 100)
 		{
 			return 2;
 		}
@@ -80,37 +84,67 @@ int Game::Update(Render* render)
 		switch (c)
 		{
 		case ' ':
-			printf("!\n");
+			GamePlayer->fireWeapon();
 			break;
 		}
 	}
 
+	if (GameState != GAME_STATE_ACTIVE)
+		return 3;
+
+	// Character movement
 	POINT curspos;
+	POINT charpos;
+
 	GetCursorPos(&curspos);
 	ScreenToClient(render->WindowHandle, &curspos);
 	render->ClientToFrame(&curspos);
 
-	POINT charpos;
-	GamePlayer.GetPos(&charpos);
+	// should hide the cursor only when it's hovered over the draw frame
+	// doesn't seem to work
+	/*
+	if ((curspos.x < 0 || curspos.x > SCREEN_SIZE_X) && (curspos.y < 0 || curspos.y > SCREEN_SIZE_Y))
+		ShowCursor(true);
+
+	else
+		ShowCursor(false);
+	*/
+
+	GamePlayer->getPos(charpos);
 
 	double distance = sqrt(pow(curspos.x - charpos.x, 2) + pow(curspos.y - charpos.y, 2));
+	double angle = absoluteangle(3.141592359 - atan2(curspos.x - charpos.x, curspos.y - charpos.y)) - 3.141592359;
 
-	if (distance > 3.0)
+	if (distance > 30.0 && distance < 300.0)
 	{
-		double angle;
-		angle = absoluteangle(3.141592359 - atan2(curspos.x - charpos.x, curspos.y - charpos.y));
-
-		GamePlayer.Move(angle - 3.141592359, distance > 6.0 ? 6.0 : distance);
+		double speed = (distance > 4.0 ? 4.0 : distance) * 0.9;
+		GamePlayer->setVelocity(speed * sin(-angle), speed * cos(-angle));
 	}
-	// Game rule code
+	else
+	{
+		GamePlayer->setVelocity(0.0, 0.0);
+	}
 
-	
-	GamePlayer.Draw(render);
+	GamePlayer->setAngle(angle);
+
+	// Tile drawing
+	Tile tilemap[20 * 15];
+	GameLevel->GetTileMap(GameLevel->GetActiveMap())->GetTiles(tilemap);
+
+	for (int i = 0; i < 20 * 15; ++i)
+	{
+		tilemap[i].Draw(render);
+	}
+
+	// Draw the character after tiles
+	GamePlayer->update();
+	GamePlayer->draw(render);
 
 	GameTick++;
 
 	return 0;
 }
+
 
 void Game::DrawString(char* string, COLORREF colour)
 {
@@ -134,7 +168,6 @@ void Game::DrawString(char* string, COLORREF colour)
 	int u = (colour >> 0) & 0xFF;
 	int v = (colour >> 8) & 0xFF;
 	int w = (colour >> 16) & 0xFF;
-	COLORREF newcolour;
 
 	int pixel = 0;
 
@@ -164,10 +197,6 @@ void Game::DrawString(char* string, COLORREF colour)
 
 				pixel++;
 			}
-		}
-
-		for (int pixel = 0; pixel < 16 * 16; ++pixel)
-		{
 		}
 	}
 

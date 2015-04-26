@@ -6,21 +6,22 @@ A tile position is an x,y between [(0,0),(20,15)].
 
 #include "stdafx.h"
 
+#include "Sprite.h"
 #include "Tile.h"
 
 
 Tile::Tile()
 {
-	// never used explicitly but just here for empty allocations
-	posX = 0;
-	posY = 0;
+	//
 }
 
 Tile::Tile(int x, int y, Sprite* spr)
 {
 	sprite = spr;
-	posX = x;
-	posY = y;
+	tilePosX = x;
+	tilePosY = y;
+	posX = x * 16;
+	posY = y * 16;
 }
 
 Tile::~Tile()
@@ -30,7 +31,7 @@ Tile::~Tile()
 
 void Tile::Draw(Render* render)
 {
-	sprite->DrawAt(render, posX * 16, posY * 16);
+	sprite->DrawAt(render, posX, posY);
 }
 
 void Tile::SetSprite(Sprite* spr)
@@ -41,4 +42,15 @@ void Tile::SetSprite(Sprite* spr)
 Sprite* Tile::GetSprite()
 {
 	return sprite;
+}
+
+void Tile::GetTilePos(int &x, int &y)
+{
+	x = tilePosX;
+	y = tilePosY;
+}
+void Tile::getPos(int &x, int &y)
+{
+	x = posX;
+	y = posY;
 }

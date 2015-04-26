@@ -1,6 +1,6 @@
 #pragma once
+#include "stdafx.h"
 
-#include <windows.h>
 
 const int CONSOLE_SIZE_X = 80;
 const int CONSOLE_SIZE_Y = 30;

@@ -1,24 +1,34 @@
 #pragma once
 #include "stdafx.h"
 
-#include "Render.h"
-
+class Render;
 
 enum SPRITE_TYPE
 {
-	GUI, // ui
 	MAP, // map tiles
+	ENT, // entities
 	CHR, // characters
-	ENT  // entities
+	GUI  // ui
+};
+
+enum COLLISION_TYPE
+{
+	NOCOLL,
+	CIRCLE,
+	SQUARE
 };
 
 class Sprite
 {
 public:
 	Sprite();
-	Sprite(char * filename, int w, int h, int zpriority, SPRITE_TYPE stype, bool issolid);
+	Sprite(char* filename, int w, int h, int zpriority, SPRITE_TYPE stype, COLLISION_TYPE coltype);
 	~Sprite();
-	void DrawAt(Render * render, int x, int y);
+	void DrawAt(Render* render, int x, int y);
+	void DrawAt(Render* render, int x, int y, double angle);
+	bool IsCollidingWith(Sprite* spr);
+	bool IsCollidingWith(int x, int y, double range);
+	COLLISION_TYPE GetColType();
 
 private:
 	COLORREF * bitmap;
@@ -26,5 +36,5 @@ private:
 	int height;
 	int zPriority;
 	SPRITE_TYPE type;
-	bool solid;
+	COLLISION_TYPE colType;
 };

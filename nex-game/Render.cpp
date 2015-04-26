@@ -28,7 +28,7 @@ void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 	FrameBuffer[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
-void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, int height, COLORREF trans) // arr length should be width * height
+void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, int height, COLORREF trans)
 {
 	int iter = 0;
 
@@ -36,7 +36,13 @@ void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, i
 	{
 		for(int x = 0; x < width; ++x)
 		{
-			if (arrptr[iter] == trans) // white pixels = transparent (lazy)
+			if (x < 0 || x > SCREEN_SIZE_X)
+				continue;
+
+			if (y < 0 || y > SCREEN_SIZE_Y)
+				continue;
+
+			if (arrptr[iter] == trans)
 			{
 				iter++;
 				continue;

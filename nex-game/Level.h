@@ -1,18 +1,17 @@
 #pragma once
 #include "stdafx.h"
 
-#include "Game.h"
-#include "TileMap.h"
-
+class TileMap;
+class SpriteManager;
 
 class Level
 {
 public:
-	Level(Game * game, char * seed);
-	TileMap GetTileMap(int index);
+	Level(SpriteManager* sm, char * seed);
+	TileMap* GetTileMap(int index);
 	int GetActiveMap();
 
 private:
-	vector<TileMap> TileMapList;
+	vector<TileMap*> TileMapList;
 	int ActiveMap;
 };

@@ -7,6 +7,7 @@ Uses SR3 - Southclaw's Retro Rendering Rapter!
 #include "BitmapLoader.h"
 #include "Render.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
 #include "Game.h"
 #include "Tile.h"
 #include "TileMap.h"
@@ -21,23 +22,27 @@ int _tmain(int argc, _TCHAR* argv[])
 	SetConsoleTitle(L"Southclaw's 2D Retro Rendering Rapter!");
 
 	// Construction
-	Render * render = new Render();
-	Game * game = new Game(render);
+	Render* render = new Render();
+	SpriteManager* sm = new SpriteManager();
+	Game* game = new Game(render, sm);
 
-	game->AddSprite(&Sprite("wall.bmp",		16, 16,	0, MAP, 1));
-	game->AddSprite(&Sprite("floor.bmp",	16, 16, 0, MAP, 0));
-	game->AddSprite(&Sprite("chr.bmp",		16, 16, 0, CHR, 0));
+	Sprite* tmp;
+
+	sm->AddSprite(tmp = new Sprite("wall.bmp",		16, 16, 0, MAP, SQUARE));
+	sm->AddSprite(tmp = new Sprite("floor.bmp",		16, 16, 0, MAP, NOCOLL));
+	sm->AddSprite(tmp = new Sprite("chr.bmp",		16, 16, 0, CHR, CIRCLE));
+	sm->AddSprite(tmp = new Sprite("blocker.bmp",	16, 16, 0, MAP, SQUARE));
+	sm->AddSprite(tmp = new Sprite("laser.bmp",		16, 16, 0, ENT, NOCOLL));
+
+//	Screen* screen = new Screen(render, game, game->GameLevel);
 
 	// Initialisation
 	game->Init();
 
-	Level * level = new Level(game, "http://en.wikipedia.org/wiki/Main_Page");
-	Screen * screen = new Screen(render, game, level);
-
 	// Enter main loop
 	while (game->GameState != GAME_STATE_END)
 	{
-		screen->Update(render, game);
+//		screen->Update(render, game);
 		game->Update(render);
 		render->Update();
 	}

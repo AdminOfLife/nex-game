@@ -5,27 +5,23 @@ Groups together a set of [TileMap]s which are composed of [Tile]s
 
 #include "stdafx.h"
 
-#include "Game.h"
 #include "Level.h"
 #include "TileMap.h"
 
-Level::Level(Game * game, char * seed)
+Level::Level(SpriteManager* sm, char * seed)
 {
-	game->GameRenderer->Clear();
-	game->DrawString(seed, RGB(255, 255, 128));
-	game->Wait(3000);
-	
 	// generate a set of TileMaps based on seed
 
 	int mapcount = 3;
+	TileMap* a;
 
 	for (int i = 0; i < mapcount; ++i)
 	{
-		TileMapList.push_back(TileMap(game));
+		TileMapList.push_back(a = new TileMap(sm));
 	}
 }
 
-TileMap Level::GetTileMap(int index)
+TileMap* Level::GetTileMap(int index)
 {
 	return TileMapList.at(index);
 }

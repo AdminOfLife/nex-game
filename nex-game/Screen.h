@@ -15,5 +15,5 @@ public:
 	void Update(Render * render, Game * game);
 
 private:
-	TileMap tileMap;
+	TileMap* tileMap;
 };
