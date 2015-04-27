@@ -9,6 +9,7 @@ A [TileMap] is a 20x15 set of [Sprite]s which must be 16x16 pixels.
 #include "Render.h"
 #include "Sprite.h"
 #include "SpriteManager.h"
+#include "EntityManager.h"
 #include "Tile.h"
 #include "TileMap.h"
 
@@ -18,42 +19,45 @@ TileMap::TileMap()
 	//
 }
 
-TileMap::TileMap(SpriteManager* sm)
+TileMap::TileMap(EntityManager* em, SpriteManager* sm)
 {
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < 20 * 15; ++i)
 	{
-		tileList[i] = Tile(x, y, sm->GetSprite(rand() % 2));
-		x++;
-		if (x == 20)
+		if (i%15 == 0)
+			tileList[i] = new Tile(em, sm->GetSprite(3), x, y);
+
+		else
+			tileList[i] = new Tile(em, sm->GetSprite(rand() % 2), x, y);
+
+		x += 16;
+		if (x >= 320)
 		{
 			x = 0;
-			y++;
+			y += 16;
 		}
 	}
-
-	tileList[21] = Tile(1, 1, sm->GetSprite(3));
 }
 
-TileMap::TileMap(Tile tiles[20 * 15])
+TileMap::TileMap(Tile* tiles[20 * 15])
 {
 	for (int i = 0; i < 20 * 15; ++i)
 		tileList[i] = tiles[i];
 }
 
-void TileMap::GetTiles(Tile tile[])
+void TileMap::getTiles(Tile* tile[])
 {
 	for (int i = 0; i < 20 * 15; ++i)
 		tile[i] = tileList[i];
 }
 
-Tile* TileMap::GetTile(int index)
+Tile* TileMap::getTile(int index)
 {
-	return &tileList[index];
+	return tileList[index];
 }
 
-void TileMap::SetTile(int index, Tile tile)
+void TileMap::setTile(int index, Tile* tile)
 {
 	tileList[index] = tile;
 }

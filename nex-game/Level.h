@@ -2,12 +2,13 @@
 #include "stdafx.h"
 
 class TileMap;
+class EntityManager;
 class SpriteManager;
 
 class Level
 {
 public:
-	Level(SpriteManager* sm, char * seed);
+	Level(EntityManager* em, SpriteManager* sm, char * seed);
 	TileMap* GetTileMap(int index);
 	int GetActiveMap();
 

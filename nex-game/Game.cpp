@@ -40,7 +40,7 @@ void Game::Init()
 	entityManager_ = new EntityManager();
 
 	GamePlayer = new Character(entityManager_, GameSpriteManager, GameSpriteManager->GetSprite(2), { 8, 16 }, 0.0);
-	GameLevel = new Level(GameSpriteManager, "NEXER");// "http://en.wikipedia.org/wiki/Main_Page");
+	GameLevel = new Level(entityManager_, GameSpriteManager, "NEXER");// "http://en.wikipedia.org/wiki/Main_Page");
 }
 
 void Game::Wait(int ms)
@@ -64,11 +64,24 @@ int Game::Update(Render* render)
 	{
 		GameTick++;
 
-		DrawString("ENTER THE NEX", RGB(255, 255, 128));
-
-		if (GameTick < 1)
+		if (GameTick < 15)
 		{
 			return 2;
+		}
+		else if (GameTick < 50)
+		{
+			render->Clear();
+			DrawString("Engine tech demo", RGB(255, 255, 128));
+		}
+		else if (GameTick < 100)
+		{
+			render->Clear();
+			DrawString("No collisions yet!", RGB(255, 255, 0));
+		}
+		else if (GameTick < 150)
+		{
+			render->Clear();
+			DrawString("[SPACE] = fire", RGB(255, 255, 200));
 		}
 		else
 		{
@@ -76,6 +89,7 @@ int Game::Update(Render* render)
 			GameState = GAME_STATE_ACTIVE;
 		}
 	}
+
 
 	if (_kbhit())
 	{
@@ -126,15 +140,6 @@ int Game::Update(Render* render)
 	}
 
 	GamePlayer->setAngle(angle);
-
-	// Tile drawing
-	Tile tilemap[20 * 15];
-	GameLevel->GetTileMap(GameLevel->GetActiveMap())->GetTiles(tilemap);
-
-	for (int i = 0; i < 20 * 15; ++i)
-	{
-		tilemap[i].Draw(render);
-	}
 
 	// Draw the character after tiles
 	entityManager_->update();

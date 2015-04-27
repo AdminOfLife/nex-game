@@ -51,20 +51,6 @@ void EntityManager::update()
 
 		++e;
 	}
-
-	for (auto e : entitySet_)
-	{
-		if (e->getTimeToLive() != -1)
-		{
-			if (GetTickCount() - e->getTimeCreated() > e->getTimeToLive())
-			{
-				DestroyEntity(e);
-				continue;
-			}
-		}
-
-		e->update();
-	}
 }
 
 void EntityManager::draw(Render* render)

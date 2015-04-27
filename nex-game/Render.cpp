@@ -30,6 +30,18 @@ void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
 
 void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, int height, COLORREF trans)
 {
+	if (posx < 0 || posx > SCREEN_SIZE_X)
+	{
+		printf("ERROR: BlockShiftBitmap attempted to write in a negative X value (%d).", posx);
+		return;
+	}
+
+	if (posy < 0 || posy > SCREEN_SIZE_Y)
+	{
+		printf("ERROR: BlockShiftBitmap attempted to write in a negative Y value (%d).", posy);
+		return;
+	}
+
 	int iter = 0;
 
 	for(int y = 0; y < height; ++y)

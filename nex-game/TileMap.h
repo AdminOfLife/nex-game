@@ -5,21 +5,21 @@
 #include "Tile.h"
 
 class SpriteManager;
+class EntityManager;
 
 class TileMap
 {
 public:
 	TileMap(); // empty constructor does nothing
-	TileMap(SpriteManager * sf);
-	TileMap(Tile tiles[20 * 15]);
-	void GetTiles(Tile tiles[]);
-	Tile* GetTile(int index);
-	void SetTile(int index, Tile tile);
-	Tile* GetSpriteCollidingTile(Sprite* spr);
-	Tile* GetPosCollidingTile(int x, int y);
+	TileMap(EntityManager* em, SpriteManager * sf);
+	TileMap(Tile* tiles[20 * 15]);
+
+	void getTiles(Tile* tiles[]);
+	Tile* getTile(int index);
+	void setTile(int index, Tile* tile);
 
 protected:
-	Tile tileList[20 * 15];
+	Tile* tileList[20 * 15];
 
 	friend class Screen;
 };

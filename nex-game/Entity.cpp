@@ -72,7 +72,11 @@ void Entity::update()
 
 void Entity::draw(Render* render)
 {
-	sprite_->DrawAt(render, position_.x, position_.y, angle_);
+	if (angle_ == 0.0)
+		sprite_->DrawAt(render, position_.x, position_.y);
+
+	else
+		sprite_->DrawAt(render, position_.x, position_.y, angle_);
 }
 
 

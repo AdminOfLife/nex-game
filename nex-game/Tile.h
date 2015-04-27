@@ -3,23 +3,26 @@
 
 class Sprite;
 class Render;
+class Entity;
+class EntityManager;
 
 class Tile
 {
 public:
 	Tile();
-	Tile(int x, int y, Sprite* spr);
+	Tile(EntityManager* em, Sprite* sprite, int x, int y);
 	~Tile();
-	void Draw(Render* render);
-	void SetSprite(Sprite* spr);
-	Sprite* GetSprite();
-	void GetTilePos(int &x, int &y);
-	void getPos(int &x, int &y);
+
+	void draw(Render* render);
+	Entity* getEntity();
+
+	void getGridPos(int &x, int &y);
 
 private:
-	Sprite* sprite;
-	int tilePosX; // 0-19
-	int tilePosY; // 0-14
-	int posX; // screen pos
-	int posY; // screen pos
+	Entity* entity_;
+	EntityManager* entityManager_;
+
+	// these positions are not screen positions, they are grid refs
+	int gridX_; // 0-19
+	int gridY_; // 0-14
 };

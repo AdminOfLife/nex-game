@@ -40,7 +40,7 @@ Sprite::~Sprite()
 
 void Sprite::DrawAt(Render* render, int x, int y)
 {
-	render->BlockShiftBitmap(bitmap_, x, y, width_, height_, -1);
+	render->BlockShiftBitmap(bitmap_, x, y, width_, height_, 0xFFFFFF);
 }
 
 void Sprite::DrawAt(Render* render, int x, int y, double angle)

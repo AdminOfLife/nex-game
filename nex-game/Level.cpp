@@ -7,17 +7,19 @@ Groups together a set of [TileMap]s which are composed of [Tile]s
 
 #include "Level.h"
 #include "TileMap.h"
+#include "EntityManager.h"
+#include "SpriteManager.h"
 
-Level::Level(SpriteManager* sm, char * seed)
+Level::Level(EntityManager* em, SpriteManager* sm, char * seed)
 {
 	// generate a set of TileMaps based on seed
 
-	int mapcount = 3;
+	int mapcount = 1;
 	TileMap* a;
 
 	for (int i = 0; i < mapcount; ++i)
 	{
-		TileMapList.push_back(a = new TileMap(sm));
+		TileMapList.push_back(a = new TileMap(em, sm));
 	}
 }
 
