@@ -23,7 +23,6 @@ Entity* EntityManager::CreateEntity(Sprite* sprite, POINT position, double angle
 
 void EntityManager::DestroyEntity(Entity* entity)
 {
-	entity->~Entity();
 	entitySet_.erase(entity);
 	delete entity;
 }
