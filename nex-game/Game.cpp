@@ -4,7 +4,6 @@
 #include "BitmapLoader.h"
 #include "Render.h"
 #include "Game.h"
-#include "Screen.h"
 #include "Level.h"
 #include "TileMap.h"
 #include "Tile.h"
@@ -19,13 +18,13 @@ Game::Game(Render* render, SpriteManager* sm)
 {
 	BM_INFOHEADER  bitmapInfoHeader;
 
-	GameRenderer = render;
+	renderHandle_ = render;
 	GameState = GAME_STATE_INIT;
-	GameTick = 0;
-	GameSpriteManager = sm;
+	gameTick_ = 0;
+	spriteManager_ = sm;
 
-	LoadBitmapFile("spl.bmp", &bitmapInfoHeader, Splash, 320, 240);
-	LoadBitmapFile("charmap.bmp", &bitmapInfoHeader, CharMap, 16, 1520);
+	LoadBitmapFile("spl.bmp", &bitmapInfoHeader, splashBmp_, 320, 240);
+	LoadBitmapFile("charmap.bmp", &bitmapInfoHeader, charMapBmp_, 16, 1520);
 }
 
 Game::~Game()
@@ -33,19 +32,19 @@ Game::~Game()
 	//
 }
 
-void Game::Init()
+void Game::init()
 {
-	GameRenderer->BlockShiftBitmap(Splash, 0, 0, 320, 240, -1);
+	renderHandle_->drawBitmap(splashBmp_, 0, 0, 320, 240, -1);
 
 	entityManager_ = new EntityManager();
 
-	GamePlayer = new Character(entityManager_, GameSpriteManager, GameSpriteManager->GetSprite(2), { 8, 16 }, 0.0);
-	GameLevel = new Level(entityManager_, GameSpriteManager, "NEXER");// "http://en.wikipedia.org/wiki/Main_Page");
+	playerCharacter_ = new Character(entityManager_, spriteManager_, spriteManager_->getSprite(2), { 8, 16 }, 0.0);
+	GameLevel = new Level(entityManager_, spriteManager_, "NEXER");// "http://en.wikipedia.org/wiki/Main_Page");
 }
 
-void Game::Wait(int ms)
+void Game::wait(int ms)
 {
-	WaitTick = GetTickCount() + ms;
+	waitTick_ = GetTickCount() + ms;
 }
 
 double absoluteangle(double angle)
@@ -55,37 +54,40 @@ double absoluteangle(double angle)
 	return angle;
 }
 
-int Game::Update(Render* render)
+int Game::update(Render* render)
 {
-	if (GetTickCount() < WaitTick)
+	if (GetTickCount() < waitTick_)
 		return 1;
 
 	if (GameState == GAME_STATE_INIT)
 	{
-		GameTick++;
+		gameTick_++;
 
-		if (GameTick < 15)
+		if (gameTick_ < 15)
 		{
 			return 2;
 		}
-		else if (GameTick < 50)
+		else if (gameTick_ < 50)
 		{
-			render->Clear();
-			DrawString("Engine tech demo", RGB(255, 255, 128));
+			render->clear();
+			drawText("Engine tech demo", RGB(255, 255, 128));
+			return 2;
 		}
-		else if (GameTick < 100)
+		else if (gameTick_ < 100)
 		{
-			render->Clear();
-			DrawString("No collisions yet!", RGB(255, 255, 0));
+			render->clear();
+			drawText("No collisions yet!", RGB(255, 255, 0));
+			return 2;
 		}
-		else if (GameTick < 150)
+		else if (gameTick_ < 150)
 		{
-			render->Clear();
-			DrawString("[SPACE] = fire", RGB(255, 255, 200));
+			render->clear();
+			drawText("[SPACE] = fire", RGB(255, 255, 200));
+			return 2;
 		}
 		else
 		{
-			render->Clear();
+			render->clear();
 			GameState = GAME_STATE_ACTIVE;
 		}
 	}
@@ -98,7 +100,7 @@ int Game::Update(Render* render)
 		switch (c)
 		{
 		case ' ':
-			GamePlayer->fireWeapon();
+			playerCharacter_->fireWeapon();
 			break;
 		}
 	}
@@ -111,8 +113,8 @@ int Game::Update(Render* render)
 	POINT charpos;
 
 	GetCursorPos(&curspos);
-	ScreenToClient(render->WindowHandle, &curspos);
-	render->ClientToFrame(&curspos);
+	ScreenToClient(render->windowHandle_, &curspos);
+	render->clientToFrame(&curspos);
 
 	// should hide the cursor only when it's hovered over the draw frame
 	// doesn't seem to work
@@ -124,7 +126,7 @@ int Game::Update(Render* render)
 		ShowCursor(false);
 	*/
 
-	GamePlayer->getPos(charpos);
+	playerCharacter_->getPos(charpos);
 
 	double distance = sqrt(pow(curspos.x - charpos.x, 2) + pow(curspos.y - charpos.y, 2));
 	double angle = absoluteangle(3.141592359 - atan2(curspos.x - charpos.x, curspos.y - charpos.y)) - 3.141592359;
@@ -132,26 +134,26 @@ int Game::Update(Render* render)
 	if (distance > 30.0 && distance < 300.0)
 	{
 		double speed = (distance > 4.0 ? 4.0 : distance) * 0.9;
-		GamePlayer->setVelocity(speed * sin(-angle), speed * cos(-angle));
+		playerCharacter_->setVelocity(speed * sin(-angle), speed * cos(-angle));
 	}
 	else
 	{
-		GamePlayer->setVelocity(0.0, 0.0);
+		playerCharacter_->setVelocity(0.0, 0.0);
 	}
 
-	GamePlayer->setAngle(angle);
+	playerCharacter_->setAngle(angle);
 
 	// Draw the character after tiles
 	entityManager_->update();
 	entityManager_->draw(render);
 
-	GameTick++;
+	gameTick_++;
 
 	return 0;
 }
 
 
-void Game::DrawString(char* string, COLORREF colour)
+void Game::drawText(char* string, COLORREF colour)
 {
 	int length = strlen(string);
 	int charpos = 0;
@@ -162,7 +164,7 @@ void Game::DrawString(char* string, COLORREF colour)
 
 	if (bitmap == nullptr)
 	{
-		printf("ERROR: Could not allocate memory for DrawString bitmap, size: %d", (length * 16) * 16);
+		printf("ERROR: Could not allocate memory for drawText bitmap, size: %d", (length * 16) * 16);
 		return;
 	}
 
@@ -179,7 +181,7 @@ void Game::DrawString(char* string, COLORREF colour)
 	for (int character = 0; character < length; ++character)
 	{
 		charpos = (string[character] - ' ') * 16 * 16;
-		// memcpy(&bitmap[i * 16 * 16], &CharMap[charpos], 16 * 16 * 4);
+		// memcpy(&bitmap[i * 16 * 16], &charMapBmp_[charpos], 16 * 16 * 4);
 
 		pixel = 0;
 
@@ -187,9 +189,9 @@ void Game::DrawString(char* string, COLORREF colour)
 		{
 			for (int y = 0; y < 16; ++y)
 			{
-				r = (((CharMap[charpos + pixel] >> 0) & 0xFF) + 255 - u);
-				g = (((CharMap[charpos + pixel] >> 8) & 0xFF) + 255 - v);
-				b = (((CharMap[charpos + pixel] >> 16) & 0xFF) + 255 - w);
+				r = (((charMapBmp_[charpos + pixel] >> 0) & 0xFF) + 255 - u);
+				g = (((charMapBmp_[charpos + pixel] >> 8) & 0xFF) + 255 - v);
+				b = (((charMapBmp_[charpos + pixel] >> 16) & 0xFF) + 255 - w);
 
 				idxpos = 16 * (x * length) + y + 16 * character;// ((pixel % 16) + (pixel / 16)) * 16 * length + 16 * character;// pixel + (character * 16 * 16);
 
@@ -205,7 +207,7 @@ void Game::DrawString(char* string, COLORREF colour)
 		}
 	}
 
-	GameRenderer->BlockShiftBitmap(bitmap, 160 - ((length * 16) / 2), 112, length * 16, 16, 0xFFFFFF);
+	renderHandle_->drawBitmap(bitmap, 160 - ((length * 16) / 2), 112, length * 16, 16, 0xFFFFFF);
 
 	delete[] bitmap;
 }

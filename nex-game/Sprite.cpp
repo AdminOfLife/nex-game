@@ -40,7 +40,7 @@ Sprite::~Sprite()
 
 void Sprite::DrawAt(Render* render, int x, int y)
 {
-	render->BlockShiftBitmap(bitmap_, x, y, width_, height_, 0xFFFFFF);
+	render->drawBitmap(bitmap_, x, y, width_, height_, 0xFFFFFF);
 }
 
 void Sprite::DrawAt(Render* render, int x, int y, double angle)
@@ -54,8 +54,8 @@ void Sprite::DrawAt(Render* render, int x, int y, double angle)
 	{
 		for (int j = 0; j<width_; j++)
 		{
-			u = round(cos(angle) * (j - (height_ / 2)) + sin(angle) * (i - (width_ / 2)) + (width_ / 2));
-			v = round(-sin(angle) * (j - (height_ / 2)) + cos(angle) * (i - (width_ / 2)) + (height_ / 2));
+			u = (int)round(cos(angle) * (j - (height_ / 2)) + sin(angle) * (i - (width_ / 2)) + (width_ / 2));
+			v = (int)round(-sin(angle) * (j - (height_ / 2)) + cos(angle) * (i - (width_ / 2)) + (height_ / 2));
 
 			if (u >= 0 && u < width_ && v >= 0 && v < height_)
 				tmp[(i * width_) + j] = bitmap_[(v * width_) + u];
@@ -65,7 +65,7 @@ void Sprite::DrawAt(Render* render, int x, int y, double angle)
 		}
 	}
 
-	render->BlockShiftBitmap(tmp, x - (width_ / 2), y - (height_ / 2), width_, height_, 0xFFFFFF);
+	render->drawBitmap(tmp, x - (width_ / 2), y - (height_ / 2), width_, height_, 0xFFFFFF);
 
 	delete[] tmp;
 }
@@ -81,7 +81,7 @@ SPRITE_TYPE Sprite::getType()
 	return drawType_;
 }
 
-COLLISION_TYPE Sprite::GetColType()
+COLLISION_TYPE Sprite::getColType()
 {
 	return collType_;
 }

@@ -33,8 +33,6 @@ Tile::~Tile()
 
 void Tile::draw(Render* render)
 {
-	POINT pos;
-	entity_->getPos(pos);
 	entity_->draw(render);
 }
 

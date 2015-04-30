@@ -13,22 +13,25 @@ Groups together a set of [TileMap]s which are composed of [Tile]s
 Level::Level(EntityManager* em, SpriteManager* sm, char * seed)
 {
 	// generate a set of TileMaps based on seed
+	// Unfinished, currently just randomises.
 
 	int mapcount = 1;
 	TileMap* a;
 
 	for (int i = 0; i < mapcount; ++i)
 	{
-		TileMapList.push_back(a = new TileMap(em, sm));
+		tileMapList_.push_back(a = new TileMap(em, sm));
 	}
+
+	activeMap_ = 0;
 }
 
-TileMap* Level::GetTileMap(int index)
+TileMap* Level::getTileMap(int index)
 {
-	return TileMapList.at(index);
+	return tileMapList_.at(index);
 }
 
-int Level::GetActiveMap()
+int Level::getActiveMap()
 {
-	return ActiveMap;
+	return activeMap_;
 }

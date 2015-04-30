@@ -26,10 +26,10 @@ TileMap::TileMap(EntityManager* em, SpriteManager* sm)
 	for (int i = 0; i < 20 * 15; ++i)
 	{
 		if (i%15 == 0)
-			tileList[i] = new Tile(em, sm->GetSprite(3), x, y);
+			tileList_[i] = new Tile(em, sm->getSprite(3), x, y);
 
 		else
-			tileList[i] = new Tile(em, sm->GetSprite(rand() % 2), x, y);
+			tileList_[i] = new Tile(em, sm->getSprite(rand() % 2), x, y);
 
 		x += 16;
 		if (x >= 320)
@@ -40,24 +40,24 @@ TileMap::TileMap(EntityManager* em, SpriteManager* sm)
 	}
 }
 
-TileMap::TileMap(Tile* tiles[20 * 15])
+TileMap::TileMap(Tile* tileList[20 * 15])
 {
 	for (int i = 0; i < 20 * 15; ++i)
-		tileList[i] = tiles[i];
+		tileList_[i] = tileList[i];
 }
 
-void TileMap::getTiles(Tile* tile[])
+void TileMap::getTiles(Tile* tileList[])
 {
 	for (int i = 0; i < 20 * 15; ++i)
-		tile[i] = tileList[i];
+		tileList[i] = tileList_[i];
 }
 
 Tile* TileMap::getTile(int index)
 {
-	return tileList[index];
+	return tileList_[index];
 }
 
 void TileMap::setTile(int index, Tile* tile)
 {
-	tileList[index] = tile;
+	tileList_[index] = tile;
 }

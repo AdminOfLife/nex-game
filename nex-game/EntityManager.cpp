@@ -25,6 +25,7 @@ void EntityManager::DestroyEntity(Entity* entity)
 {
 	entity->~Entity();
 	entitySet_.erase(entity);
+	delete entity;
 }
 
 void EntityManager::getEntitySet(set<Entity*> entitySet)
@@ -86,4 +87,18 @@ void EntityManager::draw(Render* render)
 		if (e->getSprite()->getType() == GUI)
 			e->draw(render);
 	}
+}
+
+bool EntityManager::isColliding(Entity* entity)
+{
+	for (auto e : entitySet_)
+	{
+		if (entity == e)
+			continue;
+
+		if (entity->isCollidingWith(e))
+			return true;
+	}
+
+	return false;
 }

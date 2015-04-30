@@ -7,38 +7,37 @@
 #include "Render.h"
 #include "Sprite.h"
 #include "Game.h"
-#include "Screen.h"
 
 Render::Render()
 {
-	WindowHandle = GetConsoleWindow();
+	windowHandle_ = GetConsoleWindow();
 	// set console stuff
 	COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
-	SetConsoleScreenBufferSize(WindowHandle, size);
+	SetConsoleScreenBufferSize(windowHandle_, size);
 
-	FrameBuffer = new COLORREF[FBUFFER_SIZE];
+	frameBuffer_ = new COLORREF[FBUFFER_SIZE];
 }
 
 Render::~Render()
 {
 }
 
-void Render::SetFrameBufferPixel(int x, int y, COLORREF colour)
+void Render::setFrameBufferPixel(int x, int y, COLORREF colour)
 {
-	FrameBuffer[(y * SCREEN_SIZE_X) + x] = colour;
+	frameBuffer_[(y * SCREEN_SIZE_X) + x] = colour;
 }
 
-void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, int height, COLORREF trans)
+void Render::drawBitmap(COLORREF* arrptr, int posx, int posy, int width, int height, COLORREF trans)
 {
 	if (posx < 0 || posx > SCREEN_SIZE_X)
 	{
-		printf("ERROR: BlockShiftBitmap attempted to write in a negative X value (%d).", posx);
+		printf("ERROR: drawBitmap attempted to write in a negative X value (%d).", posx);
 		return;
 	}
 
 	if (posy < 0 || posy > SCREEN_SIZE_Y)
 	{
-		printf("ERROR: BlockShiftBitmap attempted to write in a negative Y value (%d).", posy);
+		printf("ERROR: drawBitmap attempted to write in a negative Y value (%d).", posy);
 		return;
 	}
 
@@ -60,18 +59,18 @@ void Render::BlockShiftBitmap(COLORREF* arrptr, int posx, int posy, int width, i
 				continue;
 			}
 
-			FrameBuffer[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arrptr[iter++];
+			frameBuffer_[((posy + y) * SCREEN_SIZE_X) + (posx + x)] = arrptr[iter++];
 		}
 	}
 }
 
-void Render::Clear()
+void Render::clear()
 {
 	for(int i = 0; i < FBUFFER_SIZE; ++i)
-		FrameBuffer[i] = 0;
+		frameBuffer_[i] = 0;
 }
 
-void Render::Update()
+void Render::update()
 {
 	// the device context
 	HDC hdc;
@@ -87,7 +86,7 @@ void Render::Update()
 
 	int width, height;
 
-	GetClientRect(WindowHandle, &c);
+	GetClientRect(windowHandle_, &c);
 
 	width = c.right - c.left;
 	height = c.bottom - c.top;
@@ -98,7 +97,7 @@ void Render::Update()
 	y = (height / 2) - (SCREEN_SIZE_Y / 2);
 
 	// get/create stuff
-	hdc = GetDC(WindowHandle);
+	hdc = GetDC(windowHandle_);
 	hdcMem = CreateCompatibleDC(hdc);
 	bitmap = CreateCompatibleBitmap(hdc, SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
@@ -111,7 +110,7 @@ void Render::Update()
 	{
 		for (int x = 0; x < SCREEN_SIZE_X; x++)
 		{
-			SetPixel(hdcMem, x, y, FrameBuffer[bufferpointer++]);
+			SetPixel(hdcMem, x, y, frameBuffer_[bufferpointer++]);
 		}
 	}
 
@@ -121,14 +120,14 @@ void Render::Update()
 	// clean up
 	DeleteDC(hdcMem);
 	DeleteObject(bitmap);
-	ReleaseDC(WindowHandle, hdc);
+	ReleaseDC(windowHandle_, hdc);
 }
 
-void Render::ClientToFrame(POINT* point)
+void Render::clientToFrame(POINT* point)
 {
 	RECT c;
 
-	GetClientRect(WindowHandle, &c);
+	GetClientRect(windowHandle_, &c);
 
 	point->x -= ((c.right - c.left) / 2) - (SCREEN_SIZE_X / 2);
 	point->y -= ((c.bottom - c.top) / 2) - (SCREEN_SIZE_Y / 2);
@@ -145,7 +144,7 @@ void Render::ClientToFrame(POINT* point)
 
 #include "Render.h"
 
-void Render::SetFrameBufferPixel(COLORREF fBuf[], int x, int y, COLORREF colour)
+void Render::setFrameBufferPixel(COLORREF fBuf[], int x, int y, COLORREF colour)
 {
 fBuf[(y * SCREEN_SIZE_Y) + x] = colour;
 }
@@ -153,11 +152,11 @@ fBuf[(y * SCREEN_SIZE_Y) + x] = colour;
 Render::Render()
 {
 // console handle
-WindowHandle = GetConsoleWindow();
+windowHandle_ = GetConsoleWindow();
 
 // set console stuff
 COORD size = { CONSOLE_SIZE_X, CONSOLE_SIZE_Y };
-SetConsoleScreenBufferSize(WindowHandle, size);
+SetConsoleScreenBufferSize(windowHandle_, size);
 
 printf("w %d h %d buffer %d (%d bytes)", SCREEN_SIZE_X, SCREEN_SIZE_Y, FBUFFER_SIZE, FBUFFER_SIZE*4);
 }
@@ -167,10 +166,10 @@ Render::~Render()
 printf("Goodbye");
 }
 
-void Render::Update()
+void Render::update()
 {
-draw(FrameBuffer);
-render(WindowHandle, FrameBuffer);
+draw(frameBuffer_);
+render(windowHandle_, frameBuffer_);
 }
 
 void Render::draw(COLORREF fBuf[])
@@ -190,7 +189,7 @@ for (int i = 0; i < 100; i++)
 x += (int)(2 * sin(0.1));
 y += (int)(2 * cos(0.1));
 
-SetFrameBufferPixel(fBuf, x, y, RGB(255, 0, 0));
+setFrameBufferPixel(fBuf, x, y, RGB(255, 0, 0));
 }
 }
 

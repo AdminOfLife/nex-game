@@ -20,24 +20,24 @@ class Game
 public:
 	Game(Render* render, SpriteManager* sf);
 	~Game();
-	void Game::Init();
-	void Wait(int ms);
-	int Update(Render* render);
-	void MoveCharacter(double direction, double speed);
-	void DrawString(char* string, COLORREF colour);
+	void init();
+	void wait(int ms);
+	int update(Render* render);
+	void drawText(char* string, COLORREF colour);
 
 	GState GameState;
-	Render* GameRenderer;
-	SpriteManager* GameSpriteManager;
 
 	Level* GameLevel;
 
 private:
-	int GameTick;
-	DWORD WaitTick;
-	Character* GamePlayer;
-	EntityManager* entityManager_;
+	int gameTick_;
+	DWORD waitTick_;
 
-	COLORREF Splash[320 * 240];
-	COLORREF CharMap[16 * 1520];
+	Render* renderHandle_;
+	EntityManager* entityManager_;
+	SpriteManager* spriteManager_;
+	Character* playerCharacter_;
+
+	COLORREF splashBmp_[320 * 240];
+	COLORREF charMapBmp_[16 * 1520];
 };

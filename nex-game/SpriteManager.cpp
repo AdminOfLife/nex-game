@@ -17,7 +17,7 @@ void SpriteManager::AddSprite(Sprite* sprite)
 	spriteSet_.push_back(sprite);
 }
 
-Sprite* SpriteManager::GetSprite(int index)
+Sprite* SpriteManager::getSprite(int index)
 {
 	return spriteSet_.at(index);
 }

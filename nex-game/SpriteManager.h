@@ -8,7 +8,7 @@ class SpriteManager
 public:
 	SpriteManager();
 	void AddSprite(Sprite* sprite);
-	Sprite* GetSprite(int index);
+	Sprite* getSprite(int index);
 
 private:
 	vector<Sprite*> spriteSet_;

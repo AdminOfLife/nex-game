@@ -31,7 +31,7 @@ public:
 
 	void getSize(int& width, int& height);
 	SPRITE_TYPE getType();
-	COLLISION_TYPE GetColType();
+	COLLISION_TYPE getColType();
 
 private:
 	COLORREF * bitmap_;

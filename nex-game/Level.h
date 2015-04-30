@@ -9,10 +9,11 @@ class Level
 {
 public:
 	Level(EntityManager* em, SpriteManager* sm, char * seed);
-	TileMap* GetTileMap(int index);
-	int GetActiveMap();
+
+	TileMap* getTileMap(int index);
+	int getActiveMap();
 
 private:
-	vector<TileMap*> TileMapList;
-	int ActiveMap;
+	vector<TileMap*> tileMapList_;
+	int activeMap_;
 };

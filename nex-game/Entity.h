@@ -24,6 +24,8 @@ public:
 	unsigned long getTimeCreated();
 	unsigned long getTimeToLive();
 
+	bool isCollidingWith(Entity* entity);
+
 
 private:
 	Sprite* sprite_;

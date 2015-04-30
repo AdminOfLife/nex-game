@@ -46,7 +46,7 @@ void Character::fireWeapon()
 	entity_->getPos(position);
 	angle = entity_->getAngle();
 
-	entityManager_->CreateEntity(spriteManager_->GetSprite(4), position, angle, 10 * sin(-angle), 10 * cos(-angle), 500);
+	entityManager_->CreateEntity(spriteManager_->getSprite(4), position, angle, 10 * sin(-angle), 10 * cos(-angle), 500);
 }
 
 

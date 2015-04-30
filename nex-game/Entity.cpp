@@ -35,18 +35,25 @@ void Entity::update()
 	// Additional collision checks go here
 
 	/*
+
+	isColliding(Entity* entity)
+
+
+
 	// Get the tile colliding with xy
 	Tile tile;
 	int tilex, tiley;
 
 	Tile tilemap[20 * 15];
-	GameLevel->GetTileMap(GameLevel->GetActiveMap())->GetTiles(tilemap);
+	GameLevel->getTileMap(GameLevel->getActiveMap())->GetTiles(tilemap);
 
+	// replace with loop for all entities
+	// copied from the old tile collision code
 	for (int i = 0; i < 20 * 15; ++i) // replace with area based loop for closest 8 tiles
 	{
 		tile = tilemap[i];
 
-		COLLISION_TYPE tile_coltype = tile.GetSprite()->GetColType();
+		COLLISION_TYPE tile_coltype = tile.getSprite()->getColType();
 
 		if (tile_coltype == NOCOLL)
 			continue;
@@ -57,8 +64,10 @@ void Entity::update()
 		{
 			if (sqrt(pow((pos.x + offset.x) - tilex, 2) + pow((pos.y + offset.y) - tiley, 2)) < 8.0)
 			{
-				offset.x = 0;
-				offset.y = 0;
+				// todo: set velocity to the arctan from the collided to the collider
+				// maybe add a bounce for non-static collided entities (vel gets set for both entities)
+				velX_ = 0;
+				velY_ = 0;
 			}
 		}
 	}
@@ -130,4 +139,41 @@ unsigned long Entity::getTimeCreated()
 unsigned long Entity::getTimeToLive()
 {
 	return timeToLive_;
+}
+
+bool Entity::isCollidingWith(Entity* entity)
+{
+	if (sprite_->getColType() == NOCOLL)
+		return false;
+
+	POINT against;
+	entity->getPos(against);
+
+	if (sprite_->getColType() == SQUARE)
+	{
+		if (entity->getSprite()->getColType() == SQUARE)
+		{
+			//
+		}
+
+		if (entity->getSprite()->getColType() == CIRCLE)
+		{
+			//
+		}
+	}
+
+	if (sprite_->getColType() == CIRCLE)
+	{
+		if (entity->getSprite()->getColType() == SQUARE)
+		{
+			//
+		}
+
+		if (entity->getSprite()->getColType() == CIRCLE)
+		{
+			//
+		}
+	}
+
+	return false;
 }

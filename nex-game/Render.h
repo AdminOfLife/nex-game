@@ -13,14 +13,15 @@ class Render
 public:
 	Render();
 	~Render();
-	void SetFrameBufferPixel(int x, int y, COLORREF colour);
-	void BlockShiftBitmap(COLORREF* arr, int x, int y, int width, int height, COLORREF trans); // arr length should be width * height
-	void Clear();
-	void Update();
-	void ClientToFrame(POINT* point);
+	void setFrameBufferPixel(int x, int y, COLORREF colour);
+	void drawBitmap(COLORREF* arr, int x, int y, int width, int height, COLORREF trans); // arr length should be width * height
+	void clear();
+	void update();
 
-	HWND WindowHandle;
+	void clientToFrame(POINT* point);
+
+	HWND windowHandle_; // todo: safe interface
 
 private:
-	COLORREF * FrameBuffer;
+	COLORREF * frameBuffer_;
 };

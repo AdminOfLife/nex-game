@@ -12,7 +12,6 @@ Uses SR3 - Southclaw's Retro Rendering Rapter!
 #include "Tile.h"
 #include "TileMap.h"
 #include "Level.h"
-#include "Screen.h"
 using namespace std;
 
 
@@ -37,36 +36,14 @@ int _tmain(int argc, _TCHAR* argv[])
 //	Screen* screen = new Screen(render, game, game->GameLevel);
 
 	// Initialisation
-	game->Init();
+	game->init();
 
 	// Enter main loop
 	while (game->GameState != GAME_STATE_END)
 	{
-//		screen->Update(render, game);
-		game->Update(render);
-		render->Update();
+		game->update(render);
+		render->update();
 	}
 
 	return 0;
 }
-/*
-int randrange(int min, int max)
-{
-	return min + (rand() % (int)(max - min + 1));
-}
-
-void test(Render render)
-{
-	int x = 0, y = 0;
-	COLORREF c;
-
-	for (int i = 0; i < 100; i++)
-	{
-		x = randrange(0, SCREEN_SIZE_X);
-		y = randrange(0, SCREEN_SIZE_Y);
-		c = RGB(randrange(0, 255), randrange(0, 255), randrange(0, 255));
-		render.SetFrameBufferPixel(x, y, c);
-	}
-}
-
-*/

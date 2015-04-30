@@ -15,6 +15,7 @@ public:
 	void update();
 	void draw(Render* render);
 	void getEntitySet(set<Entity*> entitySet);
+	bool isColliding(Entity* entity);
 
 private:
 	set<Entity*> entitySet_;
