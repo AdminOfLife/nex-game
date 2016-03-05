@@ -63,23 +63,23 @@ int Game::update(Render* render)
 	{
 		gameTick_++;
 
-		if (gameTick_ < 15)
+		if (gameTick_ < 10)
 		{
 			return 2;
 		}
-		else if (gameTick_ < 50)
+		else if (gameTick_ < 15)
 		{
 			render->clear();
 			drawText("Engine tech demo", RGB(255, 255, 128));
 			return 2;
 		}
-		else if (gameTick_ < 100)
+		else if (gameTick_ < 20)
 		{
 			render->clear();
 			drawText("No collisions yet!", RGB(255, 255, 0));
 			return 2;
 		}
-		else if (gameTick_ < 150)
+		else if (gameTick_ < 25)
 		{
 			render->clear();
 			drawText("[SPACE] = fire", RGB(255, 255, 200));
@@ -146,6 +146,41 @@ int Game::update(Render* render)
 	// Draw the character after tiles
 	entityManager_->update();
 	entityManager_->draw(render);
+
+	// Polygon testing (temp)
+	POLYGON p;
+
+	p.nv = 3;
+	p.colour = 0xff2f6f;
+	p.vert[0] = { double(charpos.x) + 0.00, double(charpos.y) - 16.0, 10.0 };
+	p.vert[1] = { double(charpos.x) + 16.0, double(charpos.y) + 8.00, 10.0 };
+	p.vert[2] = { double(charpos.x) - 16.0, double(charpos.y) + 8.00, 10.0 };
+	//p.vert[0] = { 153, 60, 10.0 };
+	//p.vert[1] = { 290, 214, 10.0 };
+	//p.vert[2] = { 34, 217, 10.0 };
+
+	/*
+	VECTOR
+		temp1,
+		temp2;
+
+	// Copy each vertex in polygon, add displacement to allow shift
+	for (int i = 0; i < p.nv; i++)
+	{
+		temp1 = DoTransform(polyTempP.vert[i], t);
+		temp2 = Project(temp1, m_dViewAngle);
+		polyTempP.vert[i].x = temp1.x + m_iMoveX;
+		polyTempP.vert[i].y = temp1.y + m_iMoveY;
+	}
+
+	// Clip polygon edges against screen bounds
+	ClipPolyXHigh(&polyTempP, &polyTempQT, m_iWidth);
+	ClipPolyYHigh(&polyTempQT, &polyTempQ, m_iHeight);
+	ClipPolyXLow(&polyTempQ, &polyTempQT, 0);
+	ClipPolyYLow(&polyTempQT, &polyTempQ, 0);
+	*/
+
+	render->drawPolygon(&p);
 
 	gameTick_++;
 

@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	//SetConsoleTitle(L"NEXER - Explore the internet!");
 	SetConsoleTitle(L"Southclaw's 2D Retro Rendering Rapter!");
 
-	log_init(argc, argv);
+	log_init(DEBUG_NONE);
 
 	logs(DEBUG_CORE) << "Southclaw's 2D Retro Rendering Rapter Engine Initialising";
 
