@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 
+#include "Logger.h"
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Sprite.h"
@@ -34,12 +35,15 @@ void EntityManager::getEntitySet(set<Entity*> entitySet)
 
 void EntityManager::update()
 {
+	logf(DEBUG_CORE, "entity update entry for %x", this);
 	set<Entity*>::iterator e;
 
 	for (e = entitySet_.begin(); e != entitySet_.end();)
 	{
+		logf(DEBUG_LOOPS, "looping entity set");
 		if ((*e)->getTimeToLive() != -1)
 		{
+			logf(DEBUG_LOOPS, "entity timeToLive is %d", (*e)->getTimeToLive());
 			if (GetTickCount() - (*e)->getTimeCreated() > (*e)->getTimeToLive())
 			{
 				DestroyEntity((*e++));
