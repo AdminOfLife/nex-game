@@ -118,6 +118,7 @@ private:
 	vector<std::string> buffer_;
 
 	void send(Level l, string msg, string file, int line = -1);
+	bool active(Level l);
 };
 
 /*

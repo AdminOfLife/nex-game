@@ -134,7 +134,7 @@ void Logger::level(Level l)
 
 void Logger::out(Level l, string file, int line, string msg)
 {
-	if(l.idx < level_.idx)
+	if (!active(l))
 		return;
 
 	send(l, msg, file, line);
@@ -142,7 +142,7 @@ void Logger::out(Level l, string file, int line, string msg)
 
 void Logger::outf(Level l, string file, int line, string msg, ...)
 {
-	if(l.idx < level_.idx)
+	if(!active(l))
 		return;
 
 	size_t len = msg.length() + 1;
@@ -178,4 +178,9 @@ void Logger::send(Level l, string msg, string file, int line)
 	{
 		outputFile_ << ss.str() << std::endl;
 	}
+}
+
+bool Logger::active(Level l)
+{
+	return (l.idx <= level_.idx);
 }
